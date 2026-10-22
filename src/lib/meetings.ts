@@ -2,21 +2,21 @@ import "server-only";
 
 import { z } from "zod";
 import { db } from "@/lib/db";
-import type { Meeting, MeetingStatus, Transcript } from "@/generated/prisma/client";
+import type { Meeting, MeetingStatus, Prisma } from "@/generated/prisma/client";
 
 export const segmentSchema = z
   .object({
     speaker: z.string().trim().min(1).max(200),
-    startSeconds: z.number().nonnegative(),
-    endSeconds: z.number().nonnegative(),
+    startMs: z.number().int().nonnegative(),
+    endMs: z.number().int().nonnegative(),
     text: z.string(),
   })
-  .refine((s) => s.endSeconds >= s.startSeconds, {
-    message: "endSeconds must not be before startSeconds",
-    path: ["endSeconds"],
+  .refine((s) => s.endMs >= s.startMs, {
+    message: "endMs must not be before startMs",
+    path: ["endMs"],
   });
 
-export type TranscriptSegment = z.infer<typeof segmentSchema>;
+export type TranscriptSegmentInput = z.infer<typeof segmentSchema>;
 
 export const createMeetingSchema = z.object({
   title: z.string().trim().min(1).max(300),
@@ -24,7 +24,7 @@ export const createMeetingSchema = z.object({
   videoKey: z.string().min(1).max(1024),
   videoContentType: z.string().regex(/^video\//, "must be a video/* content type"),
   videoSizeBytes: z.number().int().nonnegative(),
-  durationSeconds: z.number().int().nonnegative().optional(),
+  durationMs: z.number().int().nonnegative().optional(),
 });
 
 export const saveTranscriptSchema = z.object({
@@ -46,8 +46,17 @@ export type MeetingSummary = {
   createdAt: string;
   videoContentType: string;
   videoSizeBytes: number;
-  durationSeconds: number | null;
+  durationMs: number | null;
   hasTranscript: boolean;
+};
+
+export type TranscriptSegment = {
+  id: string;
+  position: number;
+  speaker: string | null;
+  startMs: number;
+  endMs: number;
+  text: string;
 };
 
 export type TranscriptDetail = {
@@ -69,18 +78,30 @@ function toSummary(meeting: Meeting, hasTranscript: boolean): MeetingSummary {
     createdAt: meeting.createdAt.toISOString(),
     videoContentType: meeting.videoContentType,
     videoSizeBytes: Number(meeting.videoSizeBytes),
-    durationSeconds: meeting.durationSeconds,
+    durationMs: meeting.durationMs,
     hasTranscript,
   };
 }
 
-function toTranscript(transcript: Transcript): TranscriptDetail {
+const transcriptInclude = {
+  segments: { orderBy: { position: "asc" }, include: { speaker: { select: { name: true } } } },
+} satisfies Prisma.TranscriptInclude;
+
+type TranscriptWithSegments = Prisma.TranscriptGetPayload<{ include: typeof transcriptInclude }>;
+
+function toTranscript(transcript: TranscriptWithSegments): TranscriptDetail {
   return {
     id: transcript.id,
     language: transcript.language,
     text: transcript.text,
-    // Validated on write, so the stored JSON already has this shape.
-    segments: transcript.segments as TranscriptSegment[],
+    segments: transcript.segments.map((s) => ({
+      id: s.id,
+      position: s.position,
+      speaker: s.speaker?.name ?? null,
+      startMs: s.startMs,
+      endMs: s.endMs,
+      text: s.text,
+    })),
     updatedAt: transcript.updatedAt.toISOString(),
   };
 }
@@ -118,7 +139,10 @@ export async function listMeetings(): Promise<MeetingSummary[]> {
 
 export async function getMeeting(id: string): Promise<MeetingDetail | null> {
   if (!uuid.safeParse(id).success) return null;
-  const meeting = await db().meeting.findUnique({ where: { id }, include: { transcript: true } });
+  const meeting = await db().meeting.findUnique({
+    where: { id },
+    include: { transcript: { include: transcriptInclude } },
+  });
   if (!meeting) return null;
   return {
     ...toSummary(meeting, meeting.transcript !== null),
@@ -132,7 +156,8 @@ export async function getMeetingVideoKey(id: string): Promise<string | null> {
   return meeting?.videoKey ?? null;
 }
 
-// Creates or replaces the meeting's transcript and marks the meeting READY.
+// Creates or replaces the meeting's transcript and its segments, adds any new
+// speakers, and marks the meeting READY.
 // Returns null when the meeting does not exist.
 export async function saveTranscript(
   meetingId: string,
@@ -146,13 +171,41 @@ export async function saveTranscript(
     const meeting = await tx.meeting.findUnique({ where: { id: meetingId }, select: { id: true } });
     if (!meeting) return null;
 
-    const fields = { language: data.language, text, segments: data.segments };
-    const transcript = await tx.transcript.upsert({
+    const names = [...new Set(data.segments.map((s) => s.speaker))];
+    await tx.meetingSpeaker.createMany({
+      data: names.map((name) => ({ meetingId, name })),
+      skipDuplicates: true,
+    });
+    const speakers = await tx.meetingSpeaker.findMany({
+      where: { meetingId, name: { in: names } },
+      select: { id: true, name: true },
+    });
+    const speakerIds = new Map(speakers.map((s) => [s.name, s.id]));
+
+    const fields = { language: data.language, text };
+    const { id: transcriptId } = await tx.transcript.upsert({
       where: { meetingId },
       create: { meetingId, ...fields },
       update: fields,
+      select: { id: true },
+    });
+    await tx.transcriptSegment.deleteMany({ where: { transcriptId } });
+    await tx.transcriptSegment.createMany({
+      data: data.segments.map((s, position) => ({
+        transcriptId,
+        position,
+        speakerId: speakerIds.get(s.speaker),
+        startMs: s.startMs,
+        endMs: s.endMs,
+        text: s.text,
+      })),
     });
     await tx.meeting.update({ where: { id: meetingId }, data: { status: "READY" } });
+
+    const transcript = await tx.transcript.findUniqueOrThrow({
+      where: { id: transcriptId },
+      include: transcriptInclude,
+    });
     return toTranscript(transcript);
   });
 }

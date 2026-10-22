@@ -4,9 +4,10 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { getMeeting } from "@/lib/meetings";
 
-function formatTime(seconds: number) {
-  const m = Math.floor(seconds / 60);
-  const s = Math.floor(seconds % 60);
+function formatTime(ms: number) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
@@ -28,13 +29,13 @@ async function MeetingView({ params }: { params: Promise<{ id: string }> }) {
       <h2 className="mb-3 text-lg font-semibold">Transcript</h2>
       {meeting.transcript ? (
         <ol className="space-y-3">
-          {meeting.transcript.segments.map((segment, i) => (
-            <li key={i} className="grid grid-cols-[3.5rem_1fr] gap-2">
+          {meeting.transcript.segments.map((segment) => (
+            <li key={segment.id} className="grid grid-cols-[3.5rem_1fr] gap-2">
               <span className="text-sm tabular-nums text-muted-foreground">
-                {formatTime(segment.startSeconds)}
+                {formatTime(segment.startMs)}
               </span>
               <p>
-                <span className="font-medium">{segment.speaker}: </span>
+                {segment.speaker && <span className="font-medium">{segment.speaker}: </span>}
                 {segment.text}
               </p>
             </li>

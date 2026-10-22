@@ -7,6 +7,32 @@ datasource db {
   provider = "postgresql"
 }
 
+// All media times are integer milliseconds from the start of the video.
+
+// ─── Users and onboarding (Phase 2) ──────────────────────────────────────────
+// There is no auth yet, so ownership columns are optional for now.
+
+model User {
+  id                    String    @id @default(uuid()) @db.Uuid
+  email                 String    @unique
+  name                  String?
+  onboardingCompletedAt DateTime? @map("onboarding_completed_at")
+
+  meetings      Meeting[]
+  folders       Folder[]
+  tags          Tag[]
+  annotations   Annotation[]
+  askThreads    AskThread[]
+  sharesCreated Share[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+// ─── Meetings, folders and tags (Phases 3–4) ─────────────────────────────────
+
 enum MeetingStatus {
   UPLOADED
   TRANSCRIBING
@@ -15,25 +41,100 @@ enum MeetingStatus {
 }
 
 model Meeting {
-  id         String        @id @default(uuid()) @db.Uuid
-  title      String
-  recordedAt DateTime?     @map("recorded_at")
-  status     MeetingStatus @default(UPLOADED)
+  id          String        @id @default(uuid()) @db.Uuid
+  title       String
+  description String?
+  recordedAt  DateTime?     @map("recorded_at")
+  status      MeetingStatus @default(UPLOADED)
+
+  ownerId  String? @map("owner_id") @db.Uuid
+  owner    User?   @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  folderId String? @map("folder_id") @db.Uuid
+  folder   Folder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
 
   // Object key in the Neon Object Storage bucket; the bytes never live in Postgres.
-  videoKey         String  @unique @map("video_key")
-  videoContentType String  @map("video_content_type")
-  videoSizeBytes   BigInt  @map("video_size_bytes")
-  durationSeconds  Int?    @map("duration_seconds")
+  videoKey         String @unique @map("video_key")
+  videoContentType String @map("video_content_type")
+  videoSizeBytes   BigInt @map("video_size_bytes")
+  durationMs       Int?   @map("duration_ms")
 
-  transcript Transcript?
+  speakers         MeetingSpeaker[]
+  tags             MeetingTag[]
+  transcript       Transcript?
+  summaries        Summary[]
+  annotations      Annotation[]
+  timelineSections TimelineSection[]
+  actionItems      ActionItem[]
+  askThreads       AskThread[]
+  shares           Share[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@index([createdAt])
+  @@index([folderId])
+  @@index([ownerId])
   @@map("meetings")
 }
+
+model Folder {
+  id      String  @id @default(uuid()) @db.Uuid
+  name    String
+  ownerId String? @map("owner_id") @db.Uuid
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  meetings Meeting[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([ownerId, name])
+  @@map("folders")
+}
+
+// Meeting-type tags shown on cards and used in search.
+model Tag {
+  id      String  @id @default(uuid()) @db.Uuid
+  name    String
+  color   String?
+  ownerId String? @map("owner_id") @db.Uuid
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  meetings MeetingTag[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([ownerId, name])
+  @@map("tags")
+}
+
+model MeetingTag {
+  meetingId String  @map("meeting_id") @db.Uuid
+  meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  tagId     String  @map("tag_id") @db.Uuid
+  tag       Tag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([meetingId, tagId])
+  @@index([tagId])
+  @@map("meeting_tags")
+}
+
+// People who speak in a meeting. Names are editable on the detail page.
+model MeetingSpeaker {
+  id        String  @id @default(uuid()) @db.Uuid
+  meetingId String  @map("meeting_id") @db.Uuid
+  meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  name      String
+  email     String?
+
+  segments    TranscriptSegment[]
+  actionItems ActionItem[]
+
+  @@unique([meetingId, name])
+  @@map("meeting_speakers")
+}
+
+// ─── Transcripts (Phase 4) ───────────────────────────────────────────────────
 
 model Transcript {
   id        String  @id @default(uuid()) @db.Uuid
@@ -41,12 +142,222 @@ model Transcript {
   meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 
   language String @default("en")
-  // Full text for search and AI prompts; segments keep speaker and timing.
+  // Full text for search and AI prompts.
   text     String
-  segments Json   @default("[]")
+
+  segments TranscriptSegment[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("transcripts")
+}
+
+// One utterance. Clicking it seeks the video to startMs.
+model TranscriptSegment {
+  id           String          @id @default(uuid()) @db.Uuid
+  transcriptId String          @map("transcript_id") @db.Uuid
+  transcript   Transcript      @relation(fields: [transcriptId], references: [id], onDelete: Cascade)
+  position     Int
+  speakerId    String?         @map("speaker_id") @db.Uuid
+  speaker      MeetingSpeaker? @relation(fields: [speakerId], references: [id], onDelete: SetNull)
+  startMs      Int             @map("start_ms")
+  endMs        Int             @map("end_ms")
+  text         String
+
+  @@unique([transcriptId, position])
+  @@index([transcriptId, startMs])
+  @@map("transcript_segments")
+}
+
+// ─── Summaries and templates (Phase 5) ───────────────────────────────────────
+
+enum SummaryTemplate {
+  AI_NOTES
+  MEETING_MINUTES
+  SUMMARY
+  CUSTOMER_FEEDBACK
+  PROJECT_MEETING
+}
+
+enum GenerationStatus {
+  PENDING
+  READY
+  FAILED
+}
+
+model Summary {
+  id        String           @id @default(uuid()) @db.Uuid
+  meetingId String           @map("meeting_id") @db.Uuid
+  meeting   Meeting          @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  template  SummaryTemplate
+  status    GenerationStatus @default(PENDING)
+  // Template-specific structure, validated in code per template.
+  content   Json?
+  // True when the sample fallback was used because AI credentials were missing.
+  isSample  Boolean          @default(false) @map("is_sample")
+  model     String?
+  error     String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([meetingId, template])
+  @@map("summaries")
+}
+
+// ─── Annotations and timeline (Phase 6) ──────────────────────────────────────
+
+enum AnnotationType {
+  HIGHLIGHT
+  NOTE
+  NEEDS_REVIEW
+}
+
+// A selection of transcript text, from one segment/offset to another.
+model Annotation {
+  id        String         @id @default(uuid()) @db.Uuid
+  meetingId String         @map("meeting_id") @db.Uuid
+  meeting   Meeting        @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  type      AnnotationType
+  authorId  String?        @map("author_id") @db.Uuid
+  author    User?          @relation(fields: [authorId], references: [id], onDelete: SetNull)
+
+  startMs Int @map("start_ms")
+  endMs   Int @map("end_ms")
+
+  // Where the selection starts and ends in the transcript. Kept as plain ids so
+  // replacing a transcript doesn't silently delete the user's annotations.
+  startSegmentId String? @map("start_segment_id") @db.Uuid
+  startOffset    Int?    @map("start_offset")
+  endSegmentId   String? @map("end_segment_id") @db.Uuid
+  endOffset      Int?    @map("end_offset")
+  quote          String
+  note           String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([meetingId, startMs])
+  @@index([meetingId, type])
+  @@map("annotations")
+}
+
+// Named ranges on the video timeline; at most 4 per meeting (position 0–3,
+// enforced by a CHECK constraint in the migration).
+model TimelineSection {
+  id        String  @id @default(uuid()) @db.Uuid
+  meetingId String  @map("meeting_id") @db.Uuid
+  meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  position  Int
+  title     String
+  startMs   Int     @map("start_ms")
+  endMs     Int     @map("end_ms")
+
+  @@unique([meetingId, position])
+  @@map("timeline_sections")
+}
+
+// ─── Action items (Phase 7) ──────────────────────────────────────────────────
+
+model ActionItem {
+  id          String          @id @default(uuid()) @db.Uuid
+  meetingId   String          @map("meeting_id") @db.Uuid
+  meeting     Meeting         @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  description String
+  assigneeId  String?         @map("assignee_id") @db.Uuid
+  assignee    MeetingSpeaker? @relation(fields: [assigneeId], references: [id], onDelete: SetNull)
+  timestampMs Int?            @map("timestamp_ms")
+  completed   Boolean         @default(false)
+  position    Int             @default(0)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([meetingId, assigneeId])
+  @@map("action_items")
+}
+
+// ─── Ask Meetly (Phase 8) ────────────────────────────────────────────────────
+
+enum AskRole {
+  USER
+  ASSISTANT
+}
+
+model AskThread {
+  id        String  @id @default(uuid()) @db.Uuid
+  meetingId String  @map("meeting_id") @db.Uuid
+  meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  userId    String? @map("user_id") @db.Uuid
+  user      User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  messages AskMessage[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([meetingId])
+  @@map("ask_threads")
+}
+
+model AskMessage {
+  id        String           @id @default(uuid()) @db.Uuid
+  threadId  String           @map("thread_id") @db.Uuid
+  thread    AskThread        @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  role      AskRole
+  content   String
+  // Timestamp references in the answer: [{ startMs, endMs, label }].
+  citations Json             @default("[]")
+  status    GenerationStatus @default(READY)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([threadId, createdAt])
+  @@map("ask_messages")
+}
+
+// ─── Sharing (Phase 9) ───────────────────────────────────────────────────────
+
+enum ShareScope {
+  SUMMARY
+  MEETING
+}
+
+enum ShareAccess {
+  PUBLIC
+  RESTRICTED
+}
+
+model Share {
+  id          String      @id @default(uuid()) @db.Uuid
+  meetingId   String      @map("meeting_id") @db.Uuid
+  meeting     Meeting     @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  scope       ShareScope
+  access      ShareAccess
+  // SHA-256 of the link token; the token itself is only shown once.
+  tokenHash   String      @unique @map("token_hash")
+  createdById String?     @map("created_by_id") @db.Uuid
+  createdBy   User?       @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  expiresAt   DateTime?   @map("expires_at")
+  revokedAt   DateTime?   @map("revoked_at")
+
+  recipients ShareRecipient[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([meetingId])
+  @@map("shares")
+}
+
+// Who may open a RESTRICTED share, and who an email share was sent to.
+model ShareRecipient {
+  id      String    @id @default(uuid()) @db.Uuid
+  shareId String    @map("share_id") @db.Uuid
+  share   Share     @relation(fields: [shareId], references: [id], onDelete: Cascade)
+  email   String
+  sentAt  DateTime? @map("sent_at")
+
+  @@unique([shareId, email])
+  @@map("share_recipients")
 }
