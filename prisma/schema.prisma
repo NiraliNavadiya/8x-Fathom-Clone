@@ -58,6 +58,9 @@ model Meeting {
   videoSizeBytes   BigInt @map("video_size_bytes")
   durationMs       Int?   @map("duration_ms")
 
+  // Soft delete. Deleted meetings are hidden everywhere; see restoreDeletedOnReload().
+  isDeleted Boolean @default(false) @map("is_deleted")
+
   speakers         MeetingSpeaker[]
   tags             MeetingTag[]
   transcript       Transcript?
@@ -74,6 +77,7 @@ model Meeting {
   @@index([createdAt])
   @@index([folderId])
   @@index([ownerId])
+  @@index([isDeleted])
   @@map("meetings")
 }
 

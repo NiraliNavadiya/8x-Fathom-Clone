@@ -18,6 +18,11 @@ const anthropicSchema = z.object({
   ANTHROPIC_API_KEY: z.string().min(1),
 });
 
+const geminiSchema = z.object({
+  GEMINI_API_KEY: z.string().min(1),
+  GEMINI_MODEL: z.string().min(1).default("gemini-flash-latest"),
+});
+
 type EnvSource = Record<string, string | undefined>;
 
 // Error messages name the offending variables but never include their values.
@@ -43,5 +48,6 @@ function lazy<T extends z.ZodObject>(schema: T) {
 export const databaseEnv = lazy(databaseSchema);
 export const storageEnv = lazy(storageSchema);
 export const anthropicEnv = lazy(anthropicSchema);
+export const geminiEnv = lazy(geminiSchema);
 
-export const schemas = { databaseSchema, storageSchema, anthropicSchema };
+export const schemas = { databaseSchema, storageSchema, anthropicSchema, geminiSchema };

@@ -2,7 +2,7 @@ import "server-only";
 
 import { z } from "zod";
 import { db } from "@/lib/db";
-import type { Meeting, MeetingStatus, Prisma } from "@/generated/prisma/client";
+import type { MeetingStatus, Prisma } from "@/generated/prisma/client";
 
 export const segmentSchema = z
   .object({
@@ -41,6 +41,7 @@ export type SaveTranscriptInput = z.input<typeof saveTranscriptSchema>;
 export type MeetingSummary = {
   id: string;
   title: string;
+  description: string | null;
   status: MeetingStatus;
   recordedAt: string | null;
   createdAt: string;
@@ -48,6 +49,9 @@ export type MeetingSummary = {
   videoSizeBytes: number;
   durationMs: number | null;
   hasTranscript: boolean;
+  speakers: string[];
+  tags: { id: string; name: string; color: string | null }[];
+  folder: { id: string; name: string } | null;
 };
 
 export type TranscriptSegment = {
@@ -69,17 +73,31 @@ export type TranscriptDetail = {
 
 export type MeetingDetail = MeetingSummary & { transcript: TranscriptDetail | null };
 
-function toSummary(meeting: Meeting, hasTranscript: boolean): MeetingSummary {
+// Everything a meeting tile shows.
+const summaryInclude = {
+  transcript: { select: { id: true } },
+  speakers: { select: { name: true }, orderBy: { name: "asc" } },
+  tags: { select: { tag: { select: { id: true, name: true, color: true } } } },
+  folder: { select: { id: true, name: true } },
+} satisfies Prisma.MeetingInclude;
+
+type MeetingWithSummary = Prisma.MeetingGetPayload<{ include: typeof summaryInclude }>;
+
+function toSummary(meeting: MeetingWithSummary): MeetingSummary {
   return {
     id: meeting.id,
     title: meeting.title,
+    description: meeting.description,
     status: meeting.status,
     recordedAt: meeting.recordedAt?.toISOString() ?? null,
     createdAt: meeting.createdAt.toISOString(),
     videoContentType: meeting.videoContentType,
     videoSizeBytes: Number(meeting.videoSizeBytes),
     durationMs: meeting.durationMs,
-    hasTranscript,
+    hasTranscript: meeting.transcript !== null,
+    speakers: meeting.speakers.map((s) => s.name),
+    tags: meeting.tags.map((t) => t.tag).sort((a, b) => a.name.localeCompare(b.name)),
+    folder: meeting.folder,
   };
 }
 
@@ -112,8 +130,9 @@ export async function createMeeting(input: CreateMeetingInput): Promise<MeetingS
   const data = createMeetingSchema.parse(input);
   const meeting = await db().meeting.create({
     data: { ...data, videoSizeBytes: BigInt(data.videoSizeBytes) },
+    include: summaryInclude,
   });
-  return toSummary(meeting, false);
+  return toSummary(meeting);
 }
 
 // Idempotent by video key, so importing the same object twice keeps one row.
@@ -124,35 +143,36 @@ export async function upsertMeetingByVideoKey(input: CreateMeetingInput): Promis
     where: { videoKey: data.videoKey },
     create: fields,
     update: { videoContentType: fields.videoContentType, videoSizeBytes: fields.videoSizeBytes },
-    include: { transcript: { select: { id: true } } },
+    include: summaryInclude,
   });
-  return toSummary(meeting, meeting.transcript !== null);
+  return toSummary(meeting);
 }
 
-export async function listMeetings(): Promise<MeetingSummary[]> {
+export async function listMeetings(filter: { folderId?: string } = {}): Promise<MeetingSummary[]> {
   const meetings = await db().meeting.findMany({
-    orderBy: { createdAt: "desc" },
-    include: { transcript: { select: { id: true } } },
+    where: { isDeleted: false, folderId: filter.folderId },
+    orderBy: [{ recordedAt: { sort: "desc", nulls: "last" } }, { createdAt: "desc" }],
+    include: summaryInclude,
   });
-  return meetings.map((m) => toSummary(m, m.transcript !== null));
+  return meetings.map(toSummary);
 }
 
 export async function getMeeting(id: string): Promise<MeetingDetail | null> {
   if (!uuid.safeParse(id).success) return null;
-  const meeting = await db().meeting.findUnique({
-    where: { id },
-    include: { transcript: { include: transcriptInclude } },
+  const meeting = await db().meeting.findFirst({
+    where: { id, isDeleted: false },
+    include: { ...summaryInclude, transcript: { include: transcriptInclude } },
   });
   if (!meeting) return null;
   return {
-    ...toSummary(meeting, meeting.transcript !== null),
+    ...toSummary(meeting),
     transcript: meeting.transcript ? toTranscript(meeting.transcript) : null,
   };
 }
 
 export async function getMeetingVideoKey(id: string): Promise<string | null> {
   if (!uuid.safeParse(id).success) return null;
-  const meeting = await db().meeting.findUnique({ where: { id }, select: { videoKey: true } });
+  const meeting = await db().meeting.findFirst({ where: { id, isDeleted: false }, select: { videoKey: true } });
   return meeting?.videoKey ?? null;
 }
 
@@ -210,8 +230,20 @@ export async function saveTranscript(
   });
 }
 
+// Soft delete: the row and its video stay, and the meeting is hidden everywhere.
 export async function deleteMeeting(id: string): Promise<boolean> {
   if (!uuid.safeParse(id).success) return false;
-  const { count } = await db().meeting.deleteMany({ where: { id } });
+  const { count } = await db().meeting.updateMany({ where: { id, isDeleted: false }, data: { isDeleted: true } });
+  return count > 0;
+}
+
+export async function restoreDeletedMeetings(): Promise<number> {
+  const { count } = await db().meeting.updateMany({ where: { isDeleted: true }, data: { isDeleted: false } });
+  return count;
+}
+
+export async function moveMeetingToFolder(id: string, folderId: string | null): Promise<boolean> {
+  if (!uuid.safeParse(id).success || (folderId !== null && !uuid.safeParse(folderId).success)) return false;
+  const { count } = await db().meeting.updateMany({ where: { id, isDeleted: false }, data: { folderId } });
   return count > 0;
 }

@@ -1,0 +1,39 @@
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { CallsGrid, NoCalls } from "@/components/calls-grid";
+import { WaveLoader } from "@/components/wave-loader";
+import { restoreDeletedOnReload } from "@/lib/demo-restore";
+import { getFolder, listFolders } from "@/lib/folders";
+import { listMeetings } from "@/lib/meetings";
+
+async function FolderView({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  await restoreDeletedOnReload();
+  const folder = await getFolder(id);
+  if (!folder) notFound();
+  const [meetings, folders] = await Promise.all([listMeetings({ folderId: folder.id }), listFolders()]);
+
+  return (
+    <>
+      <title>{`${folder.name} · Meetly`}</title>
+      <Breadcrumbs items={[{ label: "Folders", href: "/folders" }, { label: folder.name }]} />
+      <h1 className="mb-6 text-2xl font-semibold">{folder.name}</h1>
+      <CallsGrid
+        meetings={meetings}
+        folders={folders}
+        empty={<NoCalls>No calls in this folder yet. Use “Move to folder” on any call to add it here.</NoCalls>}
+      />
+    </>
+  );
+}
+
+export default function FolderPage({ params }: PageProps<"/folders/[id]">) {
+  return (
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8">
+      <Suspense fallback={<WaveLoader label="Loading folder" />}>
+        <FolderView params={params} />
+      </Suspense>
+    </main>
+  );
+}

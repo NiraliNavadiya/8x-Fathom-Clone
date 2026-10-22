@@ -110,26 +110,39 @@
 .wave-loader {
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 32px;
 }
 
 .wave-loader > span {
-  width: 6px;
-  height: 50px;
-  margin: 0 3px;
-  border-radius: 10px;
+  width: 4px;
+  height: 32px;
+  margin: 0 2px;
+  border-radius: 999px;
   background: var(--primary);
-  transform: scaleY(0);
-  animation: wave-loader 1.2s infinite;
+  transform: scaleY(0.15);
+  opacity: 0.5;
+  animation: wave-loader 1.2s ease-in-out infinite;
+}
+
+.wave-loader[data-size="sm"] {
+  height: 20px;
+}
+
+.wave-loader[data-size="sm"] > span {
+  width: 3px;
+  height: 20px;
+  margin: 0 1.5px;
 }
 
 @keyframes wave-loader {
   0%,
   100% {
-    transform: scaleY(0);
+    transform: scaleY(0.15);
+    opacity: 0.5;
   }
   50% {
     transform: scaleY(1);
+    opacity: 1;
   }
 }
 

@@ -223,7 +223,21 @@ describe("relationships", () => {
     ]);
   });
 
-  it("deletes everything that belongs to a meeting when it is deleted", async () => {
+  it("soft-deletes: hides the meeting but keeps its row and data", async () => {
+    const meeting = await newMeeting();
+    await saveTranscript(meeting.id, { segments });
+
+    expect(await deleteMeeting(meeting.id)).toBe(true);
+    expect(await deleteMeeting(meeting.id)).toBe(false); // already deleted
+    expect(await getMeeting(meeting.id)).toBeNull();
+    expect((await listMeetings()).map((m) => m.id)).not.toContain(meeting.id);
+
+    const row = await db().meeting.findUniqueOrThrow({ where: { id: meeting.id }, include: { transcript: true } });
+    expect(row.isDeleted).toBe(true);
+    expect(row.transcript).not.toBeNull();
+  });
+
+  it("deletes everything that belongs to a meeting when its row is deleted", async () => {
     const meeting = await newMeeting();
     await saveTranscript(meeting.id, { segments });
     const speaker = await db().meetingSpeaker.findFirstOrThrow({ where: { meetingId: meeting.id } });
@@ -244,8 +258,7 @@ describe("relationships", () => {
       },
     });
 
-    expect(await deleteMeeting(meeting.id)).toBe(true);
-    expect(await getMeeting(meeting.id)).toBeNull();
+    await db().meeting.delete({ where: { id: meeting.id } });
 
     const where = { meetingId: meeting.id };
     const counts = await Promise.all([

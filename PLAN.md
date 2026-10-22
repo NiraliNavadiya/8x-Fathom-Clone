@@ -21,14 +21,13 @@ Phase 2 — App layout and onboarding
 
 
 Phase 3 — My Calls dashboard
-- At least 5 meeting cards with title, time, speakers, and meeting-type tags.
+- Meeting tiles with title, time, speakers, and meeting-type tags meeting duration.
 - Search by meeting name and tags.
-- Copy, delete, and share actions.
-- Create folders and add meetings to existing folders.
+- Copy, delete, and share actions. both vertical dot icon menu and  on hover tile show this action items
+- Create folders and add meetings to existing folders. (Folders page is different )
 - Top navigation: All Calls, Folders, and search.
 - Keyboard shortcuts for navigating pages.
-- Floating Ask Meetly button.
-
+- Floating Ask Meetly button. - open ask ai side panel , in this search through transcript of all meeting , also suggest 2-3 example to search from meeting transcripts , smooth open close animation , use gemini api key 
 
 
 
