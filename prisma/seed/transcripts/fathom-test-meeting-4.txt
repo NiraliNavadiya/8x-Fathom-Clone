@@ -1,0 +1,20 @@
+Transcript - Fathom Test Meeting 4 - October 21
+VIEW RECORDING - 2 mins (35 secs of highlights): https://fathom.video/share/Jp7H5sfXBD8XaiyzwPLCaE3AJnvStFz-
+
+---
+
+Nirali : 0.21 - Hi everyone. I'm Nirali. So this meeting is to discuss the product launch. So today we will finalize our plan for launching the new product next Friday.
+
+Nirali : 0.33  - Let's review the landing page, marketing campaign, and payment integration. First, the landing page. Rahul, let's say you will finish the design and implementation by Wednesday.
+
+Nirali : 0.46 - That gives us thought to date to review it, right? And next, marketing. Sophia will prepare the launch campaign, including social media posts and email announcements by Thursday afternoon.  
+
+Nirali : 1.0 - And the biggest risk is the payment integration. So it hasn't been fully tested yet. So I will take the ownership of testing the checkout flow by Wednesday evening and report if there is an issue.
+
+Nirali : 1.13 - Right? So let's agree on the launch criteria. And the landing page must be reviewed and the payment flow must work and the marketing material must be ready.
+
+Nirali : 1.25  - If payments aren't reliable, then we will postpone the launch rather than risk customer issue. Right? So we will have a final review meeting in Friday morning.
+
+Nirali : 1.38 - And Rahul, please share the landing page before the Thursday. And Priya, share the campaign draft by Thursday afternoon. And I will post the payment test result in Slack by Wednesday evening.
+
+Nirali : 1.52 - So great. Target launch is next Friday. Assuming all three items are ready. Thanks, everyone. Oh Oh So we about Fathom, Nirali, and Nirali,

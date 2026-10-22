@@ -1,0 +1,577 @@
+Populate the database with **2 complete test meetings** using the two videos already uploaded to Neon Object Storage.
+
+For each meeting, add:
+
+1. **Meeting details:** video name/title, description, date, duration, speakers, meeting type/tags, and video storage key.
+2. **Summaries:** generate and store separate content for all 5 templates:
+   - AI Notes
+   - Meeting Minutes
+   - Summary
+   - Customer Feedback
+   - Project Meeting
+3. **Transcript:** I will provide the exact transcripts for both meetings. Preserve them verbatim, including speaker labels, timestamps, and wording. Do not rewrite, summarize, or invent transcript content. Format them into structured speaker/timestamp segments for synchronized playback.
+4. **Action items:** 1–2 realistic test items per meeting, with description, assignee, due date if available, status, and timestamp.
+5. **Annotations:** 1–2 per meeting, including annotation type (Highlight, Note, or Needs Review), exact text, timestamp, and linked transcript segment.
+6. **Timeline:** timestamped markers for action items, highlights, and annotations, synchronized with video playback. Keep the timeline to a maximum of 4 sections.
+7. **Speakers:** names and any available metadata.
+8. **Folders and sharing:** use existing schema support where appropriate; do not invent real permissions or recipients.
+9. **Relationships:** correctly link summaries, transcript segments, action items, annotations, speakers, and videos to their meeting.
+
+First inspect the existing schema and database. Reuse existing models and fields; make only necessary, non-destructive changes. Identify the exact storage keys of both videos—never guess them.
+
+Wait for me to provide both transcripts before importing transcript data or generating transcript-dependent summaries and annotations. Keep unknown information null rather than inventing it.
+
+Seed idempotently so rerunning does not create duplicates. Verify all inserted records and relationships. Never expose or commit `.env.local` or credentials.
+
+
+Transcript - Fathom Test Meeting 4 - October 21
+VIEW RECORDING - 2 mins (35 secs of highlights): https://fathom.video/share/Jp7H5sfXBD8XaiyzwPLCaE3AJnvStFz-
+
+---
+
+Nirali : 0.21 - Hi everyone. I'm Nirali. So this meeting is to discuss the product launch. So today we will finalize our plan for launching the new product next Friday.
+
+Nirali : 0.33  - Let's review the landing page, marketing campaign, and payment integration. First, the landing page. Rahul, let's say you will finish the design and implementation by Wednesday.
+
+Nirali : 0.46 - That gives us thought to date to review it, right? And next, marketing. Sophia will prepare the launch campaign, including social media posts and email announcements by Thursday afternoon.  
+
+Nirali : 1.0 - And the biggest risk is the payment integration. So it hasn't been fully tested yet. So I will take the ownership of testing the checkout flow by Wednesday evening and report if there is an issue.
+
+Nirali : 1.13 - Right? So let's agree on the launch criteria. And the landing page must be reviewed and the payment flow must work and the marketing material must be ready.
+
+Nirali : 1.25  - If payments aren't reliable, then we will postpone the launch rather than risk customer issue. Right? So we will have a final review meeting in Friday morning.
+
+Nirali : 1.38 - And Rahul, please share the landing page before the Thursday. And Priya, share the campaign draft by Thursday afternoon. And I will post the payment test result in Slack by Wednesday evening.
+
+Nirali : 1.52 - So great. Target launch is next Friday. Assuming all three items are ready. Thanks, everyone. Oh Oh So we about Fathom, Nirali, and Nirali,
+
+
+
+
+Transcript - Community Board seats — call for feedback
+
+Andrew
+0:02
+Hi, Kim. This is Andrew. I had a question. You know, this is my first office hours for the board seats because we're, as a community, we're being asked to do a lot, right, in terms of strategy, brand, all kinds of things. So maybe I missed it, but has there been a description of how the trustee evaluation form, I guess formally referred to as the rubric, is used.
+
+0:28
+We've seen the chart. It pretty much seems to be unchanged from the first drafts we saw Q3 last year or so. But there doesn't seem— at least I haven't seen how that chart would be used exactly. Like, what's the threshold for whether someone meets or doesn't meet any kind of bare minimum requirement?
+
+0:50
+Because there doesn't even— it just seems to be a grid without any metric or explanation for how that might be used. So whether it's James Heilman, maybe you have some insight into how that was arrived at, or whether there has been any conversation about how that trustee evaluation form would be used, because upon first glance, many of our community-elected trustees would not make the cut given that form.
+
+James Heilman
+1:19
+Yep, sure, sure, Andrew. So, you know, I, of course, didn't vote in support of adopting the, the rubric you know, the vote was 9 to 1 with me being the opposing vote exactly because of the reasons that you mentioned. I don't see enough clarity at this point in time with respect to how that rubric is gonna be used to feel comfortable supporting it being rolled out.
+
+1:46
+So at this point in time, how it's gonna be used is still to be defined.
+
+Andrew
+1:53
+And maybe this is just a question that's your opinion But is it— do you see a path for it being better specified to be usable, or is it kind of a— I don't want to say dead end, but is it somewhat— is it too amorphous to be useful, or can it be clarified?
+
+James Heilman
+2:12
+So, yeah, you know, we of course have the 1, 2, 3, 4, 5, 6, 7, 8 proposals that came from the board with respect to selecting community board seats, and, you know, some of these selection pathways do contain an opportunity to use this rubric within them.
+
+2:40
+So, you know, if we look at community election selection committee, you know, one of the ideas is that this community election selection committee would then use this rubric Other ideas have, you know, some part of the board applying this rubric before people then move on to an election phase.
+
+3:05
+Not all the ideas proposed there do necessarily involve the use of the rubric.
+
+Andrew
+3:14
+Right, okay, thanks. I mean, I'd be interested in if anyone else from the community had any views on that. That seemed to be my biggest concern, because 4 of these 8 recommendations have the trustee evaluation form as a part of that. So certainly this is a pretty major issue if half the, you know, talking or discussion points here have that as a basis.
+
+Chuck Rosloff
+3:38
+I think I might be able to jump in and provide a little more information about the rubric. I'm Chuck Rosloff. I'm one of the lawyers at the Wikimedia Foundation. And I've been supporting the board and the board governance committee and some of its, its work developing these ideas and, and working on the evaluation form.
+
+3:59
+And my understanding of it is, is that it's, it's meant to be a tool and a way of thinking about what makes a person well suited for the board, what makes a person qualified to be a trustee. And kind of what are the range of types of skills and experiences and backgrounds that the board is looking for kind of when it's thinking about the entirety of the body.
+
+4:30
+And so like there's— I've never heard anyone say that there's an expectation that any given trustee would check the, you know, the 5th box in every single category or something. But that it would be a way of— it helps to give a picture of what are the sorts of qualifications that make someone well-suited to be a member of the board.
+
+4:55
+And then also, if there is a body, whether it's— or even like community voters, or if there's a selection committee that is trying to evaluate or compare any particular board candidates. It is a tool to help them do that. Does that provide a little more information, Andrew?
+
+Andrew
+5:20
+It provides information, but it doesn't really give me any more assurances, if that makes any sense. You know, if it isn't meant to be a blocker or to serve the purpose that you have, that you mentioned, then what is its purpose, right? And at the very minimum, its presence and the chart that we see with all the empty squares could be quite an intimidating thing, so you actually could affect quite a bit the number of folks who feel like they are, if we have an election, you know, feeling adequate to step up to the plate, right?
+
+5:57
+So again, if it isn't meant to— if the expectation is not that an ideal candidate has the majority of those boxes in the maximum slot, then what is the purpose of that chart? And I think it needs to be made more explicit if it is meant to be useful.
+
+Chuck Rosloff
+6:13
+I think the main point I wanted to make is there is no, like, preset minimum threshold. Like, that's not built into the evaluation form.
+
+Quin Gil
+6:22
+Yes, if that helps, because this question has come previously, and the As of now, the exact use of the evaluation form, as James has explained, is also subject to what is going to be the actual design of the selection processes, because those selection processes are not defined yet.
+
+6:47
+Therefore, the exact use of the evaluation form that you're asking for, Andrew, is not defined either. Another— when we answer about this evaluation form. Another aspect that we explain is that it has the potential of being a communication tool. What do I mean with that? When we go for board elections, of course, the people who vote are volunteers.
+
+7:15
+Volunteers are mostly editors, all the different roles in the movement, but— and therefore their view of the board and the knowledge of the board might be based on their own experiences of, you know, what the board does, when I see the board showing up. And I think a lot of people has an idea of the board that is very influenced by the occasions where they see board members.
+
+7:43
+Many times they are related with community discussions. And yes, board members do work on topics that are discussed by the communities. However, there's many other skills, and there's many other activities that board members do that actually most board members in most big organizations do, and that is a very important part of the task of board members, and these are not very visible for a lot of volunteers.
+
+8:08
+So what the evaluation form tries to capture are interesting skills for candidates that are not related to going to mailing lists or talk pages and discuss, but are related to important factors of trustees, like, I don't know, approving budgets of millions of dollars or deciding on, I don't know, strategic steps 5 years ahead and things like this.
+
+8:34
+So by mentioning these types of experience, there's also a chance that both candidates and voters will have a better idea of the types of skills in general that are expected by trustees.
+
+James Heilman
+8:52
+And, you know, just to add one more thing, you know, I think this is, you know, since how this rubric is going to be used hasn't been fully defined at this point in time, I think there is, you know, an opportunity for the community to weigh in on how they see this rubric as being best used, you know, with respect to whatever election processes we're going to be looking at.
+
+Andrew
+9:14
+Okay, well, I look forward to discussing that and finding out more. I just find it odd that the board would vote to approve this in a motion without defining either the parameters well, the metrics well, or its use well. It just seems like a very odd sequencing to me.
+
+Biyanto Rebin
+9:32
+Yes.
+
+Christophe
+9:32
+So one, just to follow up on Andrew's question or comment, one thing that is— and sorry, I have my daughter that is playing behind me, so you can hear her participate at some point. One thing that is odd is not odd, but the board approved the rubric that is very structured and professionalized with a lot of— a good part of it which is related to professional experience and skill sets and past experience in very specific areas, which tends to push for a very professionalized board.
+
+10:10
+And as Andrew said, if you use the rubric, a lot of current community seats would not be filled by the people they are filled today. And at the same time, you have the board consultation with the different paths to board seats that are— I mean, some of them are less inclined to go toward elections.
+
+10:32
+So either it's a need from the foundation that the board gets more professionalized, and that's, to me personally, that would be fine, but then it needs to be said, and then the whole discussion makes sense. Or the goal is not to have professionalized, more professional board, and then the discussion is odd. So perhaps that should maybe be clearer.
+
+10:55
+If the goal is to get a more professional board, then it should be said clearly and straightforwardly.
+
+Gideon
+11:04
+Just 2 questions. One is the lack of knowledge about what the board does and the board's activities. Isn't that something the Board should be working to fix so that as a community we can understand exactly the type of people the Board needs if we're the ones selecting and voting for these people? And the other thing, the rubric seems to me to be putting the cart before the horse.
+
+11:32
+You need to know what you want before you design a rubric to find it. In this case, you seem to have decided what you want, or you've created a rubric that fits what exists now. It's not necessarily what the community wants or what the community expects to have happen.
+
+11:57
+And filling quotas and diversity and stuff, to me, feels like If you say you've selected someone from Africa, how does someone represent 200 countries, you know, 400 languages, 800 different cultures? You know, it doesn't matter how you set up those, you can't physically have one person represent all of that anyway.
+
+12:26
+So it seems like creating a quota to have this is more a token than a practical way of actually addressing a need.
+
+James Heilman
+12:37
+And just, you know, one clarification on that comment: board members do not represent any specific group. You know, our job is to, you know, we represent the Wikimedia Foundation rather than—
+
+Gideon
+12:53
+Yeah, I understand that, so why put a quota in there? Why say you've got to have geographical diversity or language diversity or race or religion or any other form of diversity if that's not the purpose of the board anyway, to represent those areas?
+
+Andrew
+13:11
+I—
+
+Quin Gil
+13:11
+That's what I'm saying.
+
+Gideon
+13:12
+The board, and knowing what the board does and is doing, is what's failing at the moment, and that's because of a lack of transparency. We don't hear about the board, you know, We don't get a lot of information about what the board is actually doing, and then that inhibits us knowing what the board needs in the way of skills, the type of people that would be good to support.
+
+13:37
+We go into a vote blind and it ends up being, you know, the so-called popular people that get sent there, whether they're appropriate or not.
+
+James Heilman
+13:50
+You know, I think our hope with respect to diversity is that we will have a group of individuals who bring various expertise experiences from around the world and thus can best make decisions to, you know, help our movement succeed.
+
+Quin Gil
+14:07
+I have one clarification point to Nangara's comment. So these ideas presented by the board are ideas for discussion. These are not things that all of them the board wants to do. Actually, they are presented for discussion because, as far as I— well, I mean, there's no consensus about that in the board. These are true questions from the board.
+
+14:28
+So when the board is saying, hey, quotas, discuss, what they mean is this. It's not that, hey, we are thinking about implementing quotas this way, so what do you think? So I want to clarify this point because this is common for the ideas and the other ideas there. these ideas forward for a discussion. So, for instance, the feedback Nangara gave will be noted and will be presented as part of the report because we are hearing similar type of comments.
+
+14:55
+We're also hearing the opposite. We are hearing arguments like, I don't know, from volunteers in Africa saying, yeah, sure, but if it's not through a system of quotas, then we don't see any way that through direct election we are going to be an African representative in the board, for instance. So just wanted to make sure that these are not ideas that the board is planning to implement.
+
+15:17
+The board wants to ask questions, and based on the feedback and based on whatever the factors they consider, a process is meant to be defined.
+
+Gideon
+15:28
+Okay, well, that put a dampener on things, didn't it?
+
+Christophe
+15:32
+And so the point I made in the chat is that And it was based on the previous discussion that the community does not know what the board of a hundreds of millions of dollars organization, hundreds of employees, global footprint, 200+ affiliate organizations needs. And that's not something against the community.
+
+15:55
+It's just that if you have not been part of, at least have been part of such an organization or in the leadership of an organization, grasping what the board needs to do and what is its job is very complicated and very tough. And so for me right now, the community at large, not every single member, but the community at large is not in the capacity to actually know exactly what the skill sets and experiences a board for an organization such as Wikimedia Foundation needs.
+
+16:24
+And it's not about communication, it's not about any of that, it's just, it's very tough. It's something that is tough to share and that's why— You don't have corporate organizations running organizations. It's not that they don't like elections, it's just because it's a rare skill set. So, and that's what surprised me in the whole discussion, is that there is the IGC discussion and the GC discussion happening at the same time as how we do elect people in the board, whereas the two are not two different topics.
+
+16:56
+Because you can imagine a world where the Global Council is the Wikimedia voice, and then the board of the foundation is a corporate board that is running organization. And so for me, the 2 discussions are linked and it's really hard. They are in separate tracks.
+
+Biyanto Rebin
+17:09
+Hello, sorry if my internet connection is getting laggy, but I will share my experiences in Wikimedia Indonesia. So when Christoph mentioned about like not all of the community understand what the organization needs, it's actually yes, but there is a chance, for example, when we elect our board of trustees, um, 2 years ago or 3 years ago, we, uh, as the member of organizations, select someone who never have been experiences, uh, in, um, in the Wikimedia movement.
+
+17:46
+And then we got a lot of, uh, good feedback for— from her. And, uh, we also like discuss within, within our organization to, to, to appoint or maybe like elect someone like her that can maybe help us to changing our perspective and give her or their insight to us inside the organization, because it's very important.
+
+18:13
+If among like 16 board that we want to elect or select in the future, maybe the board should decide like one slot someone who understand now understand well about the finance, for example, or one people that maybe they need someone who understand about like the granting program, for example. So you, when you propose the community, the community understand, oh, the board is need someone who, for example, represents the African regions, or maybe like he or she know better about the nonprofit organizations, and then Another one that good at the
+
+18:53
+financial things under this one. So it will really good. And then when mentioned about like, oh, a lot of the people in our community doesn't understand about how the Wikimedia Foundation Port of Access work. So if it is the problem, we should like remember that, okay, if in the next 5 years or maybe 10 years, we should like nurturing our community with like building the capacity.
+
+19:20
+So, um, when we've got like a lot of the pool of the good candidates, instead of, uh, uh, for example, accusing that the community doesn't, doesn't know about, uh, Wikimedia movement at large, because like I believe that, uh, several people, and then not, not all for sure, yes, but, um, if the board published their report regularly and then what the sex expectation they have, that one, we can learn from that.
+
+19:49
+I mean, like, the best example is when we have, like, when we had, like, the part from the outside of our community, or maybe, like, the community that— but he or she doesn't understand very well. It will be like the— we just need, like, their expertise in some some areas, not all of the area, because it's impossible to have like someone who like know or understand well with a lot of the program or maybe like, I don't know, projects in this movement.
+
+20:23
+Thank you.
+
+Christophe
+20:27
+Yeah, just quickly is that I mostly agree with what you said, that it is very, very true for small size or medium-sized organizations. But when you come to an organization that employs hundreds of employees around the world, to me, and that's my personal opinion, but to me, it stopped working because your first duty then as a board is to make sure the organization is run properly and it's not having any operational role or any operational involvement.
+
+21:03
+And so not just in skill sets, but in terms of what is your role and where are you standing in the organization, it is a very, very different world. And that's something that is very tough as a change, especially in NGOs, but that is something that is needed.
+
+21:23
+And if you look at any other major NGOs in the world, they will I mean, the ones that are not too old, but they went through the same problem of going from having volunteers in the board to having professional volunteers in the board.
+
+21:45
+And for me, that's kind of the step we are in, and I think that's kind of the struggle I personally have with the current process, is that it's something that's fine, it's trying to find a solution in between highly community-based And so, Wikimedia-based way of having a board and having a professional board, and by trying to find the middle ground, I feel that it's making the conversation harder.
+
+22:11
+But it's very different when you are in a small organization and a very large one, and a growing one that have millions and millions of euros on the bank account.
+
+Andrew
+22:22
+Christophe, this is related to my follow-up question, I guess, to your comment. And you know better because you were once, you know, at the top of the board. Is the fiduciary responsibility of board members to the foundation and its work as a corporate authority, or is it to the movement and the strategic long-term goals of the movement, or is it both?
+
+James Heilman
+22:54
+So, Andrew, you know, our fiduciary responsibility is to the Wikimedia Foundation legally.
+
+Andrew
+23:01
+Right.
+
+James Heilman
+23:02
+But, you know, the way I view the situation is, you know, we are a movement. You know, the Wikimedia Foundation is like the body, while, you know, the communities are like the head. You chop one from the other and it doesn't work very well. You know, you cannot separate what is good for, you know, our movement as a whole from what is good for the Wikimedia Foundation, in my opinion.
+
+23:28
+So I do not see there as being any conflict between, you know, doing what is best for our movement as a whole and doing what is best for the Wikimedia Foundation.
+
+Andrew
+23:39
+James, I think you're right.
+
+Gideon
+23:40
+I disagree.
+
+Andrew
+23:42
+Right, right, that's why I'm wondering what Christoph has to say.
+
+Christophe
+23:44
+Christoph, go ahead. No, I somewhat disagree in the sense that by design, because of your fiduciary duty to the organization, you will have to make decisions that are not okay for the rest of the movement. And that's by design, because when you make a decision that impacts 250 affiliates and thousands and thousands of volunteers all around the globe in so many different cultures, there is no way you can make a decision that makes everyone happy.
+
+24:15
+And so then you have to think about what is— who want you, who do you serve? Then it's the foundation, and then the foundation goes. And so that's why for me the thing I think is better is to acknowledge that, accept that, and then ask, then if not the foundation's board, if the foundation's board is not the one that has a fiduciary duty to the global movement and global strategy and so on, then who has?
+
+24:43
+And then the GC discussion Right.
+
+Andrew
+24:46
+Well, Christoph, I mean, I think this helps a lot in that it's not the answer I'd love to hear, but it is the most useful answer for us to keep in mind with every conversation we have, is that I think a huge portion of our community thinks like what James is thinking, is that you're on the Board of Trustees of Wikimedia Foundation, you have a fiduciary responsibility to, just quoting from the website, the foundation and its work as the ultimate corporate authority But we also feel— not we necessarily, but a lot of us in the community feel— the Board of Trustees also has as its purview the movement at large, like what James said.
+
+25:22
+But I think you're right, Kristof, by the letter of the law or the letter of what's down there, you don't and cannot have the fiduciary interests of the entire movement. You have a very narrow charge, and it's not the whole umbrella, it's part of the umbrella.
+
+Quin Gil
+25:36
+And you shouldn't, actually.
+
+James Heilman
+25:38
+Of course, you know, doing what is best for the movement doesn't, you know, boil down to making individual parts of the movement happy. You know, doing what's best for the movement is, you know, driving us towards achieving our mission, which of course is to, you know, bring the sum of all knowledge to everyone in the world.
+
+26:04
+So slightly different than Christoph's rephrasing.
+
+Christophe
+26:07
+James?
+
+James Heilman
+26:08
+I know we've disagreed on this before.
+
+Gideon
+26:12
+I know that.
+
+Christophe
+26:14
+I remember, you know, but those are still good memories. No, but my point is, if I agree, I wish it was the case, but if the Foundation as an organization says that the priority of the future of the movement is Asia or Africa, why is not the Foundation incorporated in Asia and Africa?
+
+26:35
+because we legally can't. And that would be the— I mean, that would be one thing that would be the most negative thing to do to bolster our footprint in a region is to exist there. But for legal reasons, the Foundation will never be able to do that. And that's where I'm saying that at the end of the day, even if we— and I wish that to my heart, like deeply, that the Foundation would be able to support those 2 goals, which is having a fiduciary duty to the organization, but to the global movement too.
+
+27:05
+But at the end of the day, that is just not true. Even if I wish it to be true, it's not.
+
+Andrew
+27:10
+Right, right. And just one last thing, because I don't want to hog the conversation, but I think this is super useful to understand, even though it might have been hiding in plain sight. I think a lot of this would be alleviated if there was some form of open meeting from the board that our community could at least observe, because it sounds like this has been a long-standing tension We would have understood this tension a lot better if we kind of knew about this, because I had an inkling it was there, but it's good to have confirmation that it is in fact a real tension.
+
+27:38
+Not that it's a massive problem, but it's a disconnect in many ways in terms of thinking. The other thing is that this explains a lot of the problems we have with even something like branding, right? That the movement thinks of branding as like, wait a minute, you're about to— you're thinking of renaming the movement as the Wikipedia movement, but that has massive implications for our community and our movement.
+
+27:59
+But as a board member of the Foundation, you're like, well, that's not our charge. Our charge is look out for the Foundation and its work, and the Foundation and its work would be helped by Wikipedia Foundation. So that explains a lot of the tension we have in our community, and it's good to keep that in mind as we talk about these things.
+
+Christophe
+28:15
+And if I may, I mean, when we served, James and I, and he said that, and even if it was— to me it was mostly— I mean, it was always civil and very interesting discussion, but I feel that the discussion we just had with James and you is, as you said, it has been in there, but it's been there, and that's the core of a lot of struggle we have.
+
+Gideon
+28:35
+Yep, thank you. Um, Andrew's just done a pretty good job of, um, answering the question I wanted to ask, and I've still got one comment, is that Christoph and James seem a lot closer together than what they realize. When you're standing on the outside listening to the discussion. Christophe's right in the sense that on the board your responsibilities are different and that the movement is one of your goals and its future is one of your goals.
+
+29:09
+Our problem seems to be in that how do we get the right people out of the movement into the board? And that raises the question, is just a general election the right way to go at all for these community-selected seats? Is quotas right?
+
+29:31
+Are these things actually where we need to go? Because we're not getting the right people out of the movement into the board. We're not getting the people the board needs, and we're not getting the people the movement needs Because people don't understand the differences between the two. So there has to be something to give and communication needs to be improved.
+
+Quin Gil
+29:52
+Just some context based on the many discussions that this team is having in many different regions. As someone who has been in the movement for many years, I started my little corner in Catalan Wikisource and so forth. I am very familiar, personally, I'm very familiar with the ethos that Andrew or James are describing, for instance.
+
+30:20
+However, I have to say that I don't think that it's the only ethos going on in our movement. There's others. And I think the regional aspect, when you meet volunteers in regions like Asia or Africa, also Latin America. You find people who joined more recently in comparison.
+
+30:45
+They talked about 3 to 5 years instead of 10 to 15 years. And their perspective, for instance, things that are non-starters in the context of long-term Wikipedias with a strong Western European, North American bias, many, many assumptions there are different.
+
+31:06
+So for instance, the fact of— I think that the line of Christoph, for instance, is like, why are we even discussing that? Of course, people from our community making it to the board, the first thing is that they need to be capable of being good board members regardless of whether they are from my country or from the neighboring country from the other side of the world, for instance. It's not so clear that the role of the board members is to bring the voice of the community.
+
+31:32
+for instance, which is things that I hear, the first obligation of a trustee is to have the voice of the community in those meetings, for instance. I don't know, this is not equally understood all over the movement. And I think, and that's my last thought about this, I think I'm mentioning the regional aspect because it's easier to see, but I also wonder even in the in the Western Europe and North America contexts, if we would hear more from younger, as in people who have joined more recently, if we would hear more often what are their opinions.
+
+32:13
+Because even in these communities with volunteers from a longer, you know, contributing for a longer time, it's actually not that easy to hear new voices, as in, you know, people who are from my country that actually just joined 3 years ago and they are deeply involved in the movement just as the ones with 10, 15 years. So I just want to mention this, that many times I'm feeling in these discussions that in the context of, for instance, MetaTalk pages or Wikimedia L, there's assumptions about this is the truth and why are we even discussing it, that then you just go out from these spaces to other spaces that are just as Wikimedia as as pure community
+
+32:55
+environments, and the assumptions are just very different. And I think we need to acknowledge this.
+
+Melissa Ganus
+33:00
+Hi, thank you. This is a fascinating conversation to be part of, and I have a couple of different questions and thoughts. The first one is the nature of being on a board of directors in the United States in a 501 legal, all of those details, The boards I've seen over the years have this variance of being very involved in important decisions or barely involved.
+
+33:31
+And I'm wondering, in particular, James, I wanted to ask you, in the nature of this board, is it too involved in decisions where it should be pulling back from? And are we looking at how many decisions we can move from the small group of 16 to the bigger group of the Global Council? Does that make sense as a question?
+
+James Heilman
+33:54
+So, you know, yeah, you know, with respect to should, should the board be involved in, you know, the nuts and bolts operation of the Wikimedia Foundation, the answer is obviously no. And, and, you know, we're not, you know, the board does mainly play a fairly high-level strategic role, you know, with respect to setting directions for our ED/CEO/C-levels, you know, some of the big moves we made was with around the Universal Code of Conduct.
+
+34:29
+You know, we stated that, you know, this is something that, you know, we believe as the board our movement needs, and, you know, we instructed through the ED for that to be put into place. Same thing with, you know, our 2030 strategy. That was a recommendation coming from the board going to our executive director, and, you know, we're, we're not making any day-to-day decisions within the Wikimedia Foundation.
+
+Melissa Ganus
+34:56
+One of the other questions that related was, we all have this time constraint of 168 hours a week, and I was really surprised when I heard a board member a couple of years ago, when I asked, how much time do you spend on board-related work? He said about 5 hours a week. And as a volunteer who's, who have put in 60s, that kind of position and that amount, this is one of my criteria is I'm looking at board members who can commit time to the inexhaustible amount of work that might be involved.
+
+35:28
+In your role as a board member and with what you've seen, how many hours a week is it to be a board of trustees member?
+
+James Heilman
+35:36
+Um, you know, the What's the amount of work required? The amount of work required is variable. You know, sometimes there's much more work to do than other times, and it also depends on what committees within the board that you're sitting on, right? So, you know, some committees will have very busy periods, and some committees will, you know, like the audit committee, for example, will have, you know, a very short period of time where they're busy, and then for much of the year, things run quite, you know, fairly smoothly.
+
+36:08
+So there's a fair bit of communication back and forth. To quantify the amount of work involved is difficult.
+
+Melissa Ganus
+36:17
+Okay, thank you very much.
+
+Quin Gil
+36:20
+Yes, so about clarifying the— sorry, this word in English beats me— fiduciary scope to community members. So, well, my work is communication, so it's no secret that I do believe that we have a communications problem in general with board activities.
+
+36:42
+You know, the static information, as in, what's a board? What do they do? What the board of the foundation is doing. And then also when it comes to regular updates about activities, so that people not only hear what the board in the worst times of discussions, but just on the day-to-day, and they realize that there's plenty of plain boring stuff that the board does, all these committees and etc.
+
+37:08
+I mean, I call it boring. I hope you understand my sense of humor here. Just that people get a better idea about what it takes, what is the work. So I agree on this point. What I, again, in the privileged position this team has these days where we are getting, we're organizing many meetings, we are getting many reports from many conversations, What I find very interesting personally is that the question of what are the actual obligations of the board, so your question actually, it's very likely to come in the middle of conversations in, again, in
+
+37:48
+meetings with younger communities, younger Tuas, of course, in, again, in continents like Africa or in Asia. Whereas in other conversations we are having with longer-term volunteers, that question never comes. There's always, you know, the discussions already get into the stuff without asking about the board.
+
+38:14
+Now, does this mean that these volunteers who are not asking, they know already what the board knows? Well, maybe not. Maybe What happens is that some volunteers have an assumption and run with this assumption, and some others don't have an assumption yet and they ask. So, and that actually sets the discussion in many different ways because, of course, when people then are discussing in some place, they might be using the same vocabulary when discussing regional seeds, skills, but actually their starting points about what is the board, what the board does, what the board should
+
+38:54
+do, maybe these starting points are very different, even regardless of opinions, just basic knowledge about these questions. So yeah, I think it's a very good point, Andrew, and I think communication can help.
+
+Andrew
+39:08
+Yeah, I mean, my question was asked in the chat and you answered it. I think, you know, if someone, if a number of us who are very experienced in the movement have only just in this call had this epiphany that, wait a minute, you aren't looking for someone to be a steward of the movement. You're looking for someone to be the steward of this very specific organization that is part of the stewardship of the movement.
+
+39:32
+And I think that's a very different thing. And that would help understand or better frame a lot of the things that are going on here, because I think a lot of folks in our community are, are thinking of the board of trustees members as— the ones that oversee the entire movement. And that, um, if that is incorrect, which seems to be the way that we're going here, then that changes a lot of the expectations and the conversations that we're having here.
+
+39:56
+And it may help, you know, focus the conversations to more productive areas.
+
+Quin Gil
+40:03
+Just one more— say one more thing and then I'll shut up. Uh, but I think there's now a very good opportunity to actually, uh, refresh all these or just start Because there's all this movement strategy process with the interim Global Council, the movement charter, and the regional hubs. And these are totally new elements for everyone.
+
+40:25
+So, and these elements of course affect the future scope of the board, of the foundation in some ways. So it's a very good opportunity then to to think how we communicate all this to every single editor in our movement. Because to explain the interim global council or the regional hub, to explain them properly, you really need to start 2 steps behind on, you know, how does governance in the Wikimedia movement work today.
+
+40:56
+And which is even an interesting topic that only the people in this room would discuss for 2 hours without agreeing. So I think now it's a very good opportunity to think about how to communicate not just the new items coming from the Movement Strategy, the whole pack, including the Wikimedia Foundation and the Board of Trustees.
+
+Andrew
+41:16
+Yeah, I'd love to hear from James. You had something to say. James Hammond pointed to the Foundation Board Handbook.
+
+James Heilman
+41:31
+Yep, I was just dropping in the link to the board handbook, which runs through the specific duties of the board of the Wikimedia Foundation.
+
+Gideon
+41:42
+Can I put my voice up again? Yes, another squeaky wheel you hear all the time. Just a thought is, why aren't Because the board needs specific skill sets and you need an understanding, why isn't that understanding being offered and training on what you need in the way of a board member through the WikiConference at Berlin where you've got all the affiliates together, you've got the people that want to lead and work and build the community there in one place?
+
+42:18
+Give them the opportunity, use it as an area to identify and develop people. Over time, why isn't the board using that opportunity that's already available to? I've done it again. I've killed the conversation.
+
+Andrew
+42:33
+No, so Gideon, but wait, Gideon. If I hear you correctly, you're you're I think the point you're making is why aren't why aren't we why don't we have a system to nurture board members and not just kind of find absolutely and we've already got.
+
+Gideon
+42:49
+the people that want to lead are meeting in one place every year, at least at that point we can start identifying and training and bringing those skill sets up.
+
+Christophe
+43:00
+If I may, it's— to me, it's, uh, because most of the skills you, you— I mean, most of the skills I think are needed at the board of the foundation are not skills you learn, uh, within the Wikimedia world, or you would be taught in the Wikimedia world.
+
+43:23
+So the nurturing leadership thing is important, but it lacks the track for professional experience because you cannot provide that to people. And back to my previous point is that—
+
+Gideon
+43:40
+Yeah, obviously it's It's a skill set that is not developed in an hour between lunch and afternoon tea. It's one of those things that takes time. All I'm saying is that the lack of understanding about the Bill— about the board itself, a lot of those issues can be addressed in training and explaining how the board works, what's the expectation of them.
+
+44:09
+through something like this conference where people are coming from, so that the affiliates are able to engage and encourage the right people to step forward.
+
+Quin Gil
+44:22
+I can answer to this because while some topics during this call for feedback are being quite hot, like the quotas, actually this point you bring about training is coming very consistently. Very quietly but very consistently from many corners. And I would say that as of now, it's— I mean, of course, it's not that it's a novel idea, but what this call for feedback is helping realize, I think, is how important, how much of a priority this is.
+
+44:53
+So there's already ongoing training programs that have been focused more for, you know, in the movement organizer type of of role. And there's already, I mean, my own team, as I report to my managers, look how things are coming. This is something that is not closely related to the next election that has to run this year because it's a bit late for that.
+
+45:18
+But yes, the fact of having a training curriculum that of course will not make you a perfect board member in itself, but at least will help volunteers getting some of those skills or getting more awareness of what that skills needed is very important. This point and the point that there's also an awareness that due to the economic inequalities in different parts of the world or within societies, it's also— we are also aware that not everyone has the same access to the training for, you know, for all the economic or business type of organizational
+
+45:59
+type of skills that the ideal board member would have. And this is something that we also take into account, that the skills access doesn't cut the diversity access.
+
+Melissa Ganus
+46:10
+There's one pending question in the chat. It's from Melissa, and the question is, are the chapters and others considered peers and partners or subjects of the WMF? And the handbook that James seemed to share appears from 2017.
+
+46:32
+Yeah, so first the idea of are the chapters and affiliates and organizations subjects of, and it has felt like that for many years, the foundation is in control compared to a servant leadership model where it's the foundation supporting from their hub in San Francisco and the other organizations supporting the growth of the movement, where those of us on the front line are supported by instead of controlled by.
+
+47:01
+So that was that question. And then, James, you pointed at the board handbook, and I just glanced through the history. It doesn't look like it was substantially addressed or updated since 2017. So I just wanted to mention I was surprised to see it that old. Thank you.
+
+Chuck Rosloff
+47:17
+I can address the handbook point really quickly. It, it is definitely due for a refresh. Luckily though, I think that, I mean, the aspects about what the role of a trustee is, that is evergreen, and so those are still applicable.
+
+James Heilman
+47:32
+And then—
+
+Andrew
+47:33
+Go ahead, Drew.
+
+
+James Heilman
+47:34
+You know, with respect to the relationship between the, you know, the foundation and the affiliates, of course, you know, we have these agreements between these 2 organizations. Both organizations are independent of one another, but of course they have a, you know, we've all signed agreements One, you know, all the affiliates have signed agreements with the Wikimedia Foundation with respect to, you know, roles and responsibilities.
+
+48:01
+So there's a relationship, but they're independent. Intertwined, as Christophe stated.
+
+Andrew
+48:14
+If there's time for one more question for Christophe, and maybe James too, I'm wondering Did you— have you seen that, that definition of what would be a skill set for a board member change over time, or what, what would you see as the inflection point? Because I, I'm— in defense of us as community, I'm trying to say, if you look at who has been elected from the— from our community to be on the board, almost none of them have anything on that rubric that would qualify, right?
+
+48:41
+If you go back to— and I'm friends with pretty much every board member who's been elected. Florence, Angela Beasley, Eric Muller, Frida Bioschi, Ting Chen, Sam Klein, Phoebe Ayers— none of them have run a $100 million organization before in the past or have any experience with this. So yeah, that's all I wanted to say is that if these qualifications or the requirements changed at some point, it would be interesting to find out when that inflection point was because I— even if I agree with you, Christoph, I don't know where— when that has shifted.
+
+Christophe
+49:11
+Um, so in my opinion, and that's a very personal opinion, I can even give you a date and give you a day and almost an hour. Um, that, that's— and, and, and it's not related to the event, but the event for me is a symptom when, uh, that change, uh, happened and since when we have not been, uh, having that hard discussion of, uh, fiduciarity and how we manage that.
+
+49:37
+It's in Haifa. The letter from the board saying that affiliates should stop fundraising. This was a big letter and we don't care about the content of the letter, but that day and that letter is the, for me, the first time the foundation and the board made a decision that was in, was for to protect the foundation and not to serve the movement.
+
+Quin Gil
+50:05
+2011.
+
+Christophe
+50:06
+And that's where the shift actually began. But it's not so much a shift, but perhaps the first time there was a decision acknowledging that there is officially very, very, very, very strong fiduciarity to the foundation and not to the movement. And since then, so it's been almost 10 years, or it's been 10 years, we have not had that discussion of How do we make— how do we reconcile the fact that we have a foundation that has a fiduciary duty to the foundation and the need for the global movement to have a body that has a fiduciary responsibility to the movement?
+
+50:44
+And since then, we have had that struggle, and a lot of underlying struggles we've had, to me and in my opinion, has come from there. Even the disagreement we have in the board or As Jim said, we have had those discussions or disagreements, and those are very good to have, but we should, I mean, we should just face them and address them and have the hard discussion on how we manage them and not just trying to find middle ways of managing it, in my opinion.
+
+Andrew
+51:15
+And what is your back of the napkin, like, what percentage of our community understands this distinction?
+
+Quin Gil
+51:19
+Can I suggest that— Zero.
+
+Andrew
+51:22
+Zero. Okay, good to know.

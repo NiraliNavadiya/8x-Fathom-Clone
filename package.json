@@ -16,6 +16,7 @@
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:studio": "prisma studio",
+    "db:seed": "tsx --conditions=react-server prisma/seed/seed.mts",
     "videos:import": "tsx --conditions=react-server scripts/import-videos.mts"
   },
   "dependencies": {
