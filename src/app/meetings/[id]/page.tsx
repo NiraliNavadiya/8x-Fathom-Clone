@@ -2,6 +2,7 @@ import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import { WaveLoader } from "@/components/wave-loader";
 import { getMeeting } from "@/lib/meetings";
 
 function formatTime(ms: number) {
@@ -22,7 +23,7 @@ async function MeetingView({ params }: { params: Promise<{ id: string }> }) {
       <video
         controls
         preload="metadata"
-        className="mb-8 aspect-video w-full rounded-lg bg-black"
+        className="mb-8 aspect-video w-full rounded-lg border bg-black"
         src={`/api/meetings/${meeting.id}/video`}
       />
 
@@ -31,7 +32,7 @@ async function MeetingView({ params }: { params: Promise<{ id: string }> }) {
         <ol className="space-y-3">
           {meeting.transcript.segments.map((segment) => (
             <li key={segment.id} className="grid grid-cols-[3.5rem_1fr] gap-2">
-              <span className="text-sm tabular-nums text-muted-foreground">
+              <span className="text-sm tabular-nums text-primary">
                 {formatTime(segment.startMs)}
               </span>
               <p>
@@ -53,11 +54,11 @@ export default function MeetingPage({ params }: PageProps<"/meetings/[id]">) {
     <main className="mx-auto w-full max-w-3xl px-4 py-10">
       <Link
         href="/"
-        className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" aria-hidden /> All meetings
       </Link>
-      <Suspense fallback={<p className="text-muted-foreground">Loading meeting…</p>}>
+      <Suspense fallback={<WaveLoader label="Loading meeting" />}>
         <MeetingView params={params} />
       </Suspense>
     </main>

@@ -2,6 +2,7 @@ import { FileText, Video } from "lucide-react";
 import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { WaveLoader } from "@/components/wave-loader";
 import { listMeetings } from "@/lib/meetings";
 
 function formatSize(bytes: number) {
@@ -21,16 +22,16 @@ async function MeetingList() {
   }
 
   return (
-    <ul className="divide-y rounded-lg border">
+    <ul className="divide-y overflow-hidden rounded-lg border bg-card">
       {meetings.map((meeting) => (
         <li key={meeting.id}>
           <Link
             href={`/meetings/${meeting.id}`}
-            className="flex items-center gap-4 p-4 transition-colors hover:bg-muted"
+            className="group flex items-center gap-4 p-4 transition-colors hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
           >
-            <Video className="size-5 shrink-0 text-muted-foreground" aria-hidden />
+            <Video className="size-5 shrink-0 text-primary" aria-hidden />
             <div className="min-w-0 flex-1">
-              <p className="truncate font-medium">{meeting.title}</p>
+              <p className="truncate font-medium group-hover:text-accent-foreground">{meeting.title}</p>
               <p className="text-sm text-muted-foreground">
                 {formatSize(meeting.videoSizeBytes)} · {meeting.status.toLowerCase()}
               </p>
@@ -49,7 +50,7 @@ export default function Home() {
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-10">
       <h1 className="mb-6 text-2xl font-semibold">Meetings</h1>
-      <Suspense fallback={<p className="text-muted-foreground">Loading meetings…</p>}>
+      <Suspense fallback={<WaveLoader label="Loading meetings" />}>
         <MeetingList />
       </Suspense>
     </main>
