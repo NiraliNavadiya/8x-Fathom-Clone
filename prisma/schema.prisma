@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum MeetingStatus {
+  UPLOADED
+  TRANSCRIBING
+  READY
+  FAILED
+}
+
+model Meeting {
+  id         String        @id @default(uuid()) @db.Uuid
+  title      String
+  recordedAt DateTime?     @map("recorded_at")
+  status     MeetingStatus @default(UPLOADED)
+
+  // Object key in the Neon Object Storage bucket; the bytes never live in Postgres.
+  videoKey         String  @unique @map("video_key")
+  videoContentType String  @map("video_content_type")
+  videoSizeBytes   BigInt  @map("video_size_bytes")
+  durationSeconds  Int?    @map("duration_seconds")
+
+  transcript Transcript?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([createdAt])
+  @@map("meetings")
+}
+
+model Transcript {
+  id        String  @id @default(uuid()) @db.Uuid
+  meetingId String  @unique @map("meeting_id") @db.Uuid
+  meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+
+  language String @default("en")
+  // Full text for search and AI prompts; segments keep speaker and timing.
+  text     String
+  segments Json   @default("[]")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("transcripts")
+}
