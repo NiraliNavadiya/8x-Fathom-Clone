@@ -107,7 +107,7 @@ function AnnotationSection({
                 {a.type === "NEEDS_REVIEW" && (
                   <span
                     aria-hidden
-                    className="mb-1 inline-block rounded-full bg-red-400/15 px-2 py-0.5 text-[11px] font-medium text-red-300"
+                    className="mb-1 inline-block rounded-full bg-red-400/15 px-2 py-0.5 text-[0.6875rem] font-medium text-red-300"
                   >
                     Needs review
                   </span>

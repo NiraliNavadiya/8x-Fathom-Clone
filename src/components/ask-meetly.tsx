@@ -61,7 +61,7 @@ function AskMeetlyPanel() {
         <span className="sr-only sm:hidden">Ask Meetly</span>
         <kbd
           aria-hidden
-          className="hidden min-w-5 rounded border border-primary-foreground/30 px-1 text-center font-mono text-[11px] leading-4 uppercase sm:inline-block"
+          className="hidden min-w-5 rounded border border-primary-foreground/30 px-1 text-center font-mono text-[0.6875rem] leading-4 uppercase sm:inline-block"
         >
           a
         </kbd>
@@ -87,7 +87,7 @@ function AskMeetlyPanel() {
               aria-labelledby="ask-meetly-title"
               {...slide}
               transition={reduceMotion ? { duration: 0.15 } : { type: "spring", damping: 32, stiffness: 320 }}
-              className="fixed inset-y-0 right-0 z-50 flex w-full flex-col border-l bg-card shadow-2xl sm:w-[420px]"
+              className="fixed inset-y-0 right-0 z-50 flex w-full flex-col border-l bg-card shadow-2xl sm:w-[26.25rem]"
             >
               <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
                 <Sparkles className="size-5 text-primary" aria-hidden />
@@ -97,7 +97,7 @@ function AskMeetlyPanel() {
                 <span className="text-xs text-muted-foreground">across all your calls</span>
                 <kbd
                   aria-hidden
-                  className="ml-auto hidden rounded border px-1 font-mono text-[11px] leading-4 text-muted-foreground sm:inline-block"
+                  className="ml-auto hidden rounded border px-1 font-mono text-[0.6875rem] leading-4 text-muted-foreground sm:inline-block"
                 >
                   Esc
                 </kbd>

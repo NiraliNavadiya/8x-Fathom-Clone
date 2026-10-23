@@ -66,7 +66,7 @@ ${summaryToText(template, summary.content)}`} />
 
       <div key={template} className="animate-in fade-in-0 duration-200 motion-reduce:animate-none">
         <div className="mb-4">
-          <h2 className="text-lg font-semibold">{meta.label}</h2>
+          <h2 className="text-base font-semibold">{meta.label}</h2>
           {summary?.content != null && <Provenance summary={summary} />}
         </div>
         {!summary || summary.status === "PENDING" ? (
@@ -136,7 +136,7 @@ function Points({ points, ordered = false }: { points: Point[]; ordered?: boolea
 function Block({ title, children, empty }: { title: string; children: React.ReactNode; empty?: boolean }) {
   return (
     <section className="grid gap-2">
-      <h3 className="border-b pb-1 text-base font-semibold tracking-tight text-foreground">{title}</h3>
+      <h3 className="border-b pb-1 text-sm font-semibold tracking-tight text-foreground">{title}</h3>
       {empty ? <p className="text-muted-foreground">None recorded.</p> : children}
     </section>
   );
@@ -147,7 +147,7 @@ function TemplateBody({ template, content }: { template: SummaryTemplate; conten
     case "AI_NOTES": {
       const c = content as SummaryContent<"AI_NOTES">;
       return (
-        <div className="grid gap-6 text-[15px] leading-7">
+        <div className="grid gap-5 text-sm leading-6">
           <p>{c.overview}</p>
           {c.sections.map((s) => (
             <Block key={s.heading} title={s.heading}>
@@ -160,7 +160,7 @@ function TemplateBody({ template, content }: { template: SummaryTemplate; conten
     case "MEETING_MINUTES": {
       const c = content as SummaryContent<"MEETING_MINUTES">;
       return (
-        <div className="grid gap-6 text-[15px] leading-7">
+        <div className="grid gap-5 text-sm leading-6">
           <Block title="Attendees" empty={c.attendees.length === 0}>
             <p>{c.attendees.join(", ")}</p>
           </Block>
@@ -195,7 +195,7 @@ function TemplateBody({ template, content }: { template: SummaryTemplate; conten
     case "SUMMARY": {
       const c = content as SummaryContent<"SUMMARY">;
       return (
-        <div className="grid gap-6 text-[15px] leading-7">
+        <div className="grid gap-5 text-sm leading-6">
           <p className="rounded-xl border-l-2 border-primary bg-accent/40 p-3 leading-relaxed">
             <span className="mr-1 font-semibold text-accent-foreground">TL;DR</span>
             {c.tldr}
@@ -215,7 +215,7 @@ function TemplateBody({ template, content }: { template: SummaryTemplate; conten
         mixed: "bg-amber-300/15 text-amber-200",
       } as const;
       return (
-        <div className="grid gap-6 text-[15px] leading-7">
+        <div className="grid gap-5 text-sm leading-6">
           <p className="leading-relaxed text-muted-foreground">{c.context}</p>
           <Block title="Feedback" empty={c.feedback.length === 0}>
             <ul className="grid gap-2">
@@ -249,7 +249,7 @@ function TemplateBody({ template, content }: { template: SummaryTemplate; conten
         off_track: ["Off track", "bg-red-400/15 text-red-300"],
       } as const;
       return (
-        <div className="grid gap-6 text-[15px] leading-7">
+        <div className="grid gap-5 text-sm leading-6">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <p className="leading-relaxed">
               <span className="font-semibold">Goal: </span>

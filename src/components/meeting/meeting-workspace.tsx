@@ -93,8 +93,8 @@ export function MeetingWorkspace({
       )}
       <MeetingHeader meeting={meeting} folders={folders} share={share} colors={colors} readOnly={!!shared} />
 
-      <div className="mt-8 grid gap-8 [grid-template-areas:'player'_'tabs'_'details'] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:[grid-template-areas:'tabs_player'_'tabs_details']">
-        <div className="grid gap-6 [grid-area:player]">
+      <div className="mt-5 grid gap-5 [grid-template-areas:'player'_'tabs'_'details'] lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:[grid-template-areas:'tabs_player'_'tabs_details']">
+        <div className="grid gap-4 [grid-area:player]">
           <VideoPlayer
             meetingId={meeting.id}
             videoPath={shared?.videoPath}
@@ -116,7 +116,7 @@ export function MeetingWorkspace({
         </div>
 
         {!shared && (
-          <div className="grid content-start gap-6 [grid-area:details]">
+          <div className="grid content-start gap-4 [grid-area:details]">
             <ActionItems
               items={actionItems.list}
               speakers={meeting.speakerDetails}
@@ -150,7 +150,7 @@ function LeftTabs({
 
   return (
     <Tabs defaultValue="summary" className="flex h-full min-h-[28rem] flex-col overflow-hidden rounded-xl border bg-card">
-      <TabsList variant="line" className="w-full shrink-0 justify-start gap-0 border-b px-2 group-data-horizontal/tabs:h-11 bg-border">
+      <TabsList variant="line" className="w-full shrink-0 justify-start gap-0 border-b px-2 group-data-horizontal/tabs:h-9 bg-border">
         <TabsTrigger value="summary" className="flex-none px-3 data-active:text-primary after:bg-primary">
           <FileText aria-hidden /> Summary
         </TabsTrigger>
@@ -163,10 +163,10 @@ function LeftTabs({
           </TabsTrigger>
         )}
       </TabsList>
-      <TabsContent value="summary" className="min-h-0 overflow-y-auto p-4 max-lg:max-h-[70vh]">
+      <TabsContent value="summary" className="min-h-0 overflow-y-auto p-3 max-lg:max-h-[70vh]">
         <SummaryTab summaries={meeting.summaries} />
       </TabsContent>
-      <TabsContent value="transcript" keepMounted className="min-h-0 overflow-y-auto p-4 max-lg:max-h-[70vh]">
+      <TabsContent value="transcript" keepMounted className="min-h-0 overflow-y-auto p-3 max-lg:max-h-[70vh]">
         <TranscriptTab
           meetingId={meeting.id}
           transcript={meeting.transcript}

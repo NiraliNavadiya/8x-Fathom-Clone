@@ -59,7 +59,7 @@ function AppNav() {
                 <kbd
                   aria-hidden
                   className={cn(
-                    "hidden min-w-5 rounded border px-1 text-center font-mono text-[11px] leading-4 uppercase md:inline-block",
+                    "hidden min-w-5 rounded border px-1 text-center font-mono text-[0.6875rem] leading-4 uppercase md:inline-block",
                     "border-border text-muted-foreground",
                   )}
                 >

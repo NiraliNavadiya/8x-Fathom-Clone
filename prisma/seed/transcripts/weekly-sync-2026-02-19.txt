@@ -1,0 +1,242 @@
+Transcript - Weekly sync — 2026-02-19
+
+Briley Christopher Oxley
+0:01
+Hello and welcome to the CiviviWiki weekly meeting. Today is Monday, February 19th, 2018. My name is Briley Christopher Oxley and I'm here with—
+
+Mitchell West
+0:12
+Mitchell West.
+
+Briley Christopher Oxley
+0:14
+Alright, and since Mitchell and I are the only— due to the holiday and perhaps other people's conflicting schedules, we're the only 2 here for this meeting, so we're just going to dive right in and take a look at some recent pull requests and try to keep this meeting pretty short.
+
+Mitchell West
+0:33
+Sounds good.
+
+Briley Christopher Oxley
+0:33
+Alright, so basically we have several pull requests that had been opened a while ago, which I kind of just resolved conflicts and merged. Some unidentified variables by Juhi, reorganizing the imports.
+
+0:55
+These were kind of, you know, maintenance code cleanup tasks. We had a pull request from a new contributor, and I'm opening that now. If you— let's see, you want me to share my screen, Mitchell?
+
+Mitchell West
+1:11
+That sounds good, yeah.
+
+Briley Christopher Oxley
+1:12
+Yep, sorry about that, I forgot. Here we go, application window. Okay, can you see it? Pull request number 145. There's some kind of changes to our About Us page and a link to our GitHub issue— excuse me, GitHub repository.
+
+1:37
+So this is, I think, a first-time contributor, to my knowledge at least, Stephen Hitchcock from Seattle, Washington. We're gonna go ahead and try to tweet our appreciation if we can find Stephen's Twitter handle, or just reach out and say hello and welcome them to the project.
+
+1:57
+Do you have any comments on that?
+
+Mitchell West
+2:01
+Nope, nope, sounds good. I already posted a little comment down on that issue. Hopefully we'll hear back from him soon.
+
+Briley Christopher Oxley
+2:06
+Awesome. So that was the main amount of work that was kind of merged in, in the past week. Oh, I'm sorry, there was one other pull request that's noteworthy. We have now merged the test framework. So that was quite a bit of effort.
+
+2:31
+Do you want to comment on that, Mitchell? Peter has been in communication with you.
+
+Mitchell West
+2:37
+Yeah, I'll jump in real quick. So yeah, this was— we brought in a developer, Peter, from— I think he was somewhere in Eastern Europe.
+
+Briley Christopher Oxley
+2:48
+Poland.
+
+Mitchell West
+2:48
+But he's a great guy. He came in— Poland, yes. And so he came in, and over the last couple weeks, he went through and developed some automated testing for us, identified quite a few little bugs that we've been going through and cleaning up. And it'll help us to ensure that we keep a stable product as we're kicking stuff out. We just wrapped up this project. He's really great.
+
+3:09
+He said that if we run into any problems in the future, he likes to have ongoing long-term maintenance for it. So if we continue to expand the project and run into areas where we might need more testing, he's open to us reaching out and doing what he can to keep it working for us.
+
+Briley Christopher Oxley
+3:24
+Awesome.
+
+Mitchell West
+3:25
+It looks like it's going to be closed up and should be working, but everyone should keep an eye out if they see anything that we need to do to improve that.
+
+Briley Christopher Oxley
+3:35
+Yep, that's good. And for some reason it's not showing up. I'll have to find out. I'm a little bit confused here why. Usually it's in the top-level folder. I didn't pay attention to detail there. But one interesting thing that happened was when reviewing his test cases, I noticed a lot of times, you know, he's simulating user clicks on a page, kind of a user moving around and touching buttons or looking— filling in fields.
+
+4:10
+And sometimes he could just, you know, use a CSS identifier, you know, to get the exact element on the page. But other times He was trying— having to kind of describe the path in the page in low-level terms like find this element and then go down to the 3rd child of this element and select the text.
+
+4:34
+And so that can easily be resolved by just better annotating our code using HTML IDs and classes where appropriate.
+
+Mitchell West
+4:46
+Yeah, and it sounds like those issues that are all opened up are good issues for first-time developers to come in and add some IDs. It gives them a chance to dig around through, you know, the functionality of the website and help clean it up. I've promoted that to a couple of developers. Of course, if anyone knows anyone else, they can reach out.
+
+5:06
+Or if anyone happens to watch this video and wants to work on those areas, we're always looking for more help.
+
+Briley Christopher Oxley
+5:13
+Great. And to follow up to Peter's work will be to also get our code under some sort of continuous integration environment so that anytime we merge changes into specific branches like dev or test, our test suite will run against it. We'll have to look into that to see what the specific details were— would be.
+
+5:35
+And that might also be worth hiring a developer to continue that work, setting up continuous integration. I can create a GitHub issue for that.
+
+Mitchell West
+5:46
+Certainly. Let's open up an issue for it. We'll read through it. And I'm assuming that's kind of an extension of QA work. What sort of development skills would we be looking for in a developer to complete that task?
+
+Briley Christopher Oxley
+6:02
+Essentially— They're going to have to be familiar with a CI tool like Travis or Jenkins and how to integrate that with GitHub. And basically, whenever something happens on GitHub, we merge changes into a branch or make commits, it'll trigger a CI build.
+
+6:27
+And in that continuous integration build, you can put different steps, and one of those steps that's really common is to run all your automated tests, and if any of the tests fail, it'll fail the build, and it'll tell you which tests failed, and it will prevent that branch from being merged until all the tests are passing. So that's the process in a nutshell.
+
+Mitchell West
+6:47
+Right.
+
+Briley Christopher Oxley
+6:47
+We would need somebody that's familiar with that. Hopefully they can, you know, obviously learn as they go too. That's a great part of doing open source work, but we wouldn't want that to take, you know, months. Days or weeks would be preferable. Good.
+
+Mitchell West
+7:05
+Sounds good.
+
+Briley Christopher Oxley
+7:11
+So I'll just set up this— go ahead.
+
+Mitchell West
+7:14
+Yeah, no, no, I was just— while you were typing, I think we had early on in the project, Darius, I believe, set up a basic Jenkins system to automatically push our GitHub up to— at that point, we were using AWS servers. And so, I don't know if he'd be available to help out. I might reach out to him. But yeah, I think I understand the direction we're going with this.
+
+Briley Christopher Oxley
+7:46
+Yep.
+
+Mitchell West
+7:46
+And while you're typing that up, so aside from closing these 2 issues and— sorry, closing these 2— merging these couple pull requests and setting up this additional issue. Are there any major tasks that we want to focus on for the next week? I know it'll be better once we have, you know, a couple more people here to bounce off of, but I will try and reach out to Juhi on Thursday.
+
+8:12
+I think the big thing that I want to talk about next week's meeting is trying to push through to Milestone 2 because I think we're really close on getting our you know, our simplified issue thread working.
+
+Briley Christopher Oxley
+8:25
+Mm-hmm.
+
+Mitchell West
+8:26
+And so I think that if we can just add that basic functionality of linking in an external link to say a bill text and identifying, you know, the level of government action we're looking for on a solution civvy, I feel like that's to the point that we can then really start testing and trying to, you know, get people from problem down to solution.
+
+8:49
+We might want to do additional editing to give people more control of the city outline, as we talked about last week. But I think that for Milestone 2, just setting up a simple way to link solutions to bills would be the first step. Now, the second thing I was talking to Paul about this last week was how difficult slash what we would want in order to in order to then create datasets off of this.
+
+9:20
+So each issue thread theoretically should be able to be a dataset and trying to track how many people support a solution, Sivvi. I don't know with how our backend is set up currently, how tough would it be to, say, you know, create an HTML5, you know, type printable spreadsheet type document or whatever of voting.
+
+Briley Christopher Oxley
+9:47
+Like a list of all the votes against or— well, we'd have to have some designs, but if we could wireframe it, if we could mock some, you know, designs out even on a napkin or whatever and take a picture of that, then we could go more into that. But generally, you know, we have— it's pretty flexible how we display the data underneath.
+
+10:10
+As long as it's well organized underneath the— or behind the scenes. And I've been thinking a little bit about your description of the relationships between, you know, causes, solutions, problems.
+
+Mitchell West
+10:23
+Uh-huh.
+
+Briley Christopher Oxley
+10:24
+As a data model, I think my recommendation, based on just, you know, a little bit of thought, is that those should all be stored in their own kind of buckets. What we call the table, kind of collection of documents, and linked by foreign key relationships. And then our— basically the— either we'll determine types and directions of the relationships, and those constraints can also be reinforced in the user interface that, in other words, will only show a particular If you find an issue, you can only, you know, you can say add
+
+11:04
+cause for this issue, right? It would reflect the data model on the front end. And then likewise, any reports would just be built as a reflection or extend out of that data model. And I could—
+
+Mitchell West
+11:16
+Yeah, yeah. And what I was thinking—
+
+Briley Christopher Oxley
+11:18
+Go ahead.
+
+Mitchell West
+11:19
+Yeah, sorry. Yeah, that sounds good. And because what I think about it is that it is, if we just keep it to where it's Problems are the top level. Like, they don't link into anything. They're like, you know, they're like a pin that everything else links to because they're the top. And then causes, we allow causes to link to any higher levels. So cause 1 could link to problem, cause 2 could link to cause 1, cause 3 could link to cause 2, but cause 3 could not link to cause 1.
+
+Briley Christopher Oxley
+11:45
+Yeah.
+
+Mitchell West
+11:45
+You know, and so it creates a chain. Right now we just smash all the causes down into one ranked piece, and that's fine. So if we can keep it like that, but the idea is that then Problem doesn't link to anything, causes link to problems, solutions link to causes, and this would just be expanding the number of intermediate links that we allow before you get down to a solution.
+
+Briley Christopher Oxley
+12:05
+Right.
+
+Mitchell West
+12:07
+And so, uh—
+
+Briley Christopher Oxley
+12:08
+A cause could link to multiple— yeah, so basically if you can think in terms of like a corkboard and taking some basic ingredients, you know, sort of 3x5 cards, some twine or string or yarn and some thumbtacks. And basically you can put a— you have 3 or 4 different colored cards.
+
+12:31
+You have like blue ones are causes, red ones are problems. And basically if you could envision taking a card and putting a thumbtack onto it on that board and then taking some— another card of another color and putting a thumbtack to the board and putting some yarn of a different— to connect it to, you know, that's what we're building in the database. Those are the types of constraints that we literally would draw and design and then implement at the database level.
+
+12:56
+So it's kind of a very simple visual approach, but if you have— well, that's it. I think if we can just think in terms of that, it would be— then we can diagram the constraints that you're kind of already describing.
+
+Mitchell West
+13:13
+Yeah, no, that sounds good. So what I might do this week then is try and draw up a simple model for how to display the important data that I think should come out of it.
+
+Briley Christopher Oxley
+13:23
+Yeah.
+
+Mitchell West
+13:23
+And a simple model, maybe expanding on what we have in terms of— I don't want to change our problem to cause to solution until we have the ability to link, you know, link solution policies and to try and get data out of that. But so I'll write up a model for that this week and we'll try and present that in next week's meeting. We are coming up on 30 minutes even though our delay's been good chatting, so I suppose we'll probably wrap up around here.
+
+13:50
+It looks like we've closed a couple poll requests, clarified, opened up a new issue, and I have a plan for something I'll bring to the meeting next week. Anything else that you needed to cover?
+
+Briley Christopher Oxley
+14:02
+No, not specifically. Generally though, we need to keep focusing on marketing. We're getting new contributors in, who knows through what channels, but I think that's kind of a potentially demonstrating that we are getting out there, where people are finding us. So keep up labeling these good first issues and help wanted tasks. Keep tweeting.
+
+14:24
+I'll keep releasing the videos and just engaging people and trying to build this community a little bit at a time. We don't have to have a big marketing push, but taking note of what other open source projects are doing to build their communities.
+
+Mitchell West
+14:37
+Sounds good. Sounds good. Well, you have a good week, Briley, and I will talk to you throughout the week or by next Monday.
+
+Briley Christopher Oxley
+14:44
+Alright, have a great week, Mitchell.
+
+Mitchell West
+14:46
+You as well. Bye.

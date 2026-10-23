@@ -1,4 +1,4 @@
-// Test data for the two meetings whose videos are in Neon Object Storage.
+// Test data for the meetings whose videos are in Neon Object Storage.
 // Transcripts are in ./transcripts, copied verbatim from the provided text.
 // Summaries, action items and annotations were written from those transcripts;
 // every timestamp points at the start of the segment it refers to.
@@ -476,4 +476,733 @@ const boardSeats: SeedMeeting = {
   ],
 };
 
-export const seedMeetings = [productLaunch, boardSeats];
+const EDITOR_ROUNDTABLE_MS = 1_017_375;
+
+// Speakers are diarization labels ("Speaker A"...). The transcript's own names
+// for them conflict (A is called both Betsy and Mariana), so labels are kept.
+const editorRoundtable: SeedMeeting = {
+  videoKey: "Editor engagement roundtable.mp4",
+  transcriptFile: "editor-engagement-roundtable.txt",
+  format: "block",
+  title: "Editor engagement roundtable",
+  description:
+    "Workshop with experienced editors collecting talk-page and communication workflows: welcome messages, collaboration, patrolling, acknowledgments and mass messaging.",
+  recordedAt: null,
+  durationMs: EDITOR_ROUNDTABLE_MS,
+  folder: "Community",
+  tags: ["Community", "User Research"],
+  speakers: [
+    { name: "Speaker A", role: null },
+    { name: "Speaker B", role: null },
+    { name: "Speaker C", role: null },
+    { name: "Speaker D", role: null },
+    { name: "Speaker E", role: null },
+    { name: "Speaker F", role: null },
+    { name: "Speaker G", role: null },
+    { name: "Jake", role: null },
+  ],
+  summaries: {
+    AI_NOTES: {
+      overview:
+        "Experienced editors shared how they use talk pages and messages before breaking into small groups to map one workflow each. The discussion covered welcome messages, collaboration, patrolling and watchlists, acknowledgments, mass messaging and the New Pages feed.",
+      sections: [
+        {
+          heading: "Welcome messages",
+          points: [
+            {
+              text: "Speaker C was welcomed early on but couldn't tell whether it came from a person or a bot; it felt devoid of social cues.",
+              timestampMs: t("0:25"),
+            },
+            { text: "Speaker C: just saying whether a message is automated would help.", timestampMs: t("1:07") },
+            { text: "In user tests, people split 50/50 on whether the welcome came from a human or a robot.", timestampMs: t("1:18") },
+            {
+              text: "Speaker E suggested welcoming automatically, clearly marked as automated, with starting points based on the user's interests.",
+              timestampMs: t("1:27"),
+            },
+          ],
+        },
+        {
+          heading: "Connection and collaboration",
+          points: [
+            {
+              text: "Speaker A's first edit was translated overnight, and a personal welcome from another editor started a real conversation.",
+              timestampMs: t("2:18"),
+            },
+            {
+              text: "Speaker A rounded up editors in several countries to improve a Japanese editor's math article within 24 hours.",
+              timestampMs: t("4:24"),
+            },
+            {
+              text: "A human connection matters more than boilerplate text and tutorials.",
+              timestampMs: t("5:30"),
+            },
+          ],
+        },
+        {
+          heading: "Simple automated welcomes",
+          points: [
+            {
+              text: "Speaker G's project uses a welcome bot that signs messages as someone active in the past hour.",
+              timestampMs: t("6:02"),
+            },
+            { text: "Hand-made templates with many links had become overwhelming.", timestampMs: t("6:40") },
+            {
+              text: "Keep it simple: a greeting, something to try and an offer to help. Newcomers often write back.",
+              timestampMs: t("7:24"),
+            },
+          ],
+        },
+        {
+          heading: "Patrolling, acknowledgments and messaging",
+          points: [
+            {
+              text: "Speaker D reverts vandalism and leaves templated warnings, but only wants to hear back about thoughtful replies.",
+              timestampMs: t("8:23"),
+            },
+            {
+              text: "Speaker D watches other users' talk pages to find articles to help with, without interacting.",
+              timestampMs: t("10:32"),
+            },
+            {
+              text: "Workflows should include what happens before and after the talk-page step; a one-click revert-and-warn is really several events.",
+              timestampMs: t("11:22"),
+            },
+            {
+              text: "Jake wants easier ways to thank people and to collect acknowledgments like Barnstars, and a replacement for EdwardsBot.",
+              timestampMs: t("13:00"),
+            },
+            { text: "Speaker F finds the New Pages feed useful for finding and improving new articles.", timestampMs: t("14:58") },
+          ],
+        },
+      ],
+    },
+    MEETING_MINUTES: {
+      attendees: ["Speaker A", "Speaker B", "Speaker C", "Speaker D", "Speaker E", "Speaker F", "Speaker G", "Jake"],
+      agenda: [
+        "Welcome messages",
+        "Connection and collaboration stories",
+        "Patrolling and watchlists",
+        "Acknowledgments and mass messaging",
+        "Small-group workflow breakdowns",
+      ],
+      discussion: [
+        {
+          topic: "Welcome messages",
+          notes: "Newcomers can't tell automated welcomes from personal ones. Proposals: label automated messages, or keep them simple and signed by someone currently active.",
+          timestampMs: t("0:25"),
+        },
+        {
+          topic: "Connection and collaboration stories",
+          notes: "Personal contact and rounding up collaborators across countries drew editors in more than the content itself.",
+          timestampMs: t("2:18"),
+        },
+        {
+          topic: "Patrolling and watchlists",
+          notes: "Patrollers want notice of replies to their warnings without watchlisting every user. Some work starts from other users' talk pages.",
+          timestampMs: t("8:23"),
+        },
+        {
+          topic: "Acknowledgments and mass messaging",
+          notes: "Requests for easier thanks, collecting acknowledgments, and replacing the EdwardsBot global messaging bot.",
+          timestampMs: t("13:00"),
+        },
+      ],
+      decisions: [
+        { text: "Hold the reply-notification question until later.", timestampMs: t("10:27") },
+        { text: "Break into small groups, each picking one workflow.", timestampMs: t("16:05") },
+      ],
+      nextSteps: [
+        { text: "Read back the workflows discussed so far.", timestampMs: t("16:05") },
+        { text: "Small groups each work through one workflow.", timestampMs: t("16:05") },
+      ],
+    },
+    SUMMARY: {
+      tldr: "Editors want welcomes that feel human or are honestly labeled as automated, notifications only for replies they care about, easier ways to thank each other, and a better mass-messaging tool than EdwardsBot.",
+      keyPoints: [
+        { text: "Users split 50/50 on whether a welcome came from a human or a bot.", timestampMs: t("1:18") },
+        { text: "Simple welcomes signed by someone currently active get replies.", timestampMs: t("7:24") },
+        { text: "Patrollers want to hear only about thoughtful replies to their warnings.", timestampMs: t("9:34") },
+        { text: "Requests for easier acknowledgments and a replacement for EdwardsBot.", timestampMs: t("13:28") },
+      ],
+    },
+    CUSTOMER_FEEDBACK: {
+      context: "Feedback from experienced editors on talk-page and communication workflows, gathered in a workshop.",
+      feedback: [
+        {
+          speaker: "Speaker C",
+          sentiment: "negative",
+          text: "Being welcomed without knowing whether it was a person or a bot felt devoid of social cues.",
+          timestampMs: t("0:47"),
+        },
+        {
+          speaker: "Speaker A",
+          sentiment: "positive",
+          text: "A personal welcome from another editor was what got them into the community.",
+          timestampMs: t("2:46"),
+        },
+        {
+          speaker: "Speaker G",
+          sentiment: "positive",
+          text: "Simple automated welcomes still open a conversation; newcomers often reply.",
+          timestampMs: t("7:03"),
+        },
+        {
+          speaker: "Speaker D",
+          sentiment: "negative",
+          text: "Watchlisting every warned user's talk page would flood the watchlist.",
+          timestampMs: t("9:54"),
+        },
+        {
+          speaker: "Jake",
+          sentiment: "negative",
+          text: "EdwardsBot is a low-tech, difficult way to message many users.",
+          timestampMs: t("14:37"),
+        },
+        {
+          speaker: "Speaker F",
+          sentiment: "positive",
+          text: "The New Pages feed is helpful for finding new articles to improve.",
+          timestampMs: t("14:58"),
+        },
+      ],
+      painPoints: [
+        { text: "Newcomers can't tell whether a welcome is automated.", timestampMs: t("1:07") },
+        { text: "Template-heavy welcomes with many links are overwhelming.", timestampMs: t("6:40") },
+        { text: "No way to be notified only when a warned user replies.", timestampMs: t("9:34") },
+        { text: "Sending a message to many users is difficult.", timestampMs: t("14:37") },
+      ],
+      requests: [
+        { text: "Indicate whether a message is automated or from a person.", timestampMs: t("1:07") },
+        { text: "Notify only on replies, not on other templates or blocks.", timestampMs: t("9:34") },
+        { text: "Collect acknowledgments, such as a thanks counter.", timestampMs: t("13:28") },
+        { text: "A thanks button on Barnstars.", timestampMs: t("13:54") },
+        { text: "Replace EdwardsBot.", timestampMs: t("14:15") },
+      ],
+    },
+    PROJECT_MEETING: {
+      goal: "Collect editor talk-page workflows and pick one per small group to map in detail.",
+      status: null,
+      workstreams: [
+        { name: "Small-group workflow breakdowns", owner: null, due: null, timestampMs: t("16:05") },
+        { name: "EdwardsBot replacement", owner: "Speaker E", due: null, timestampMs: t("14:28") },
+        { name: "Reply notifications for warning messages", owner: null, due: null, timestampMs: t("10:15") },
+      ],
+      risks: [
+        {
+          text: "Users can't tell automated welcomes from personal ones.",
+          mitigation: "Keep welcomes simple and signed by someone currently active.",
+          timestampMs: t("1:18"),
+        },
+      ],
+      nextMilestone: { text: "Break into small groups, each taking one workflow.", timestampMs: t("16:05") },
+    },
+  },
+  actionItems: [
+    {
+      description: "Replace EdwardsBot, the global messaging bot.",
+      assignee: "Speaker E", // 14:28, "I'm working on it."
+      timestampMs: t("14:28"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Revisit reply notifications for warning messages.",
+      assignee: null,
+      timestampMs: t("10:27"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      // Asked of "Mariana", who isn't one of the labeled speakers.
+      description: "Read back the workflows discussed so far.",
+      assignee: null,
+      timestampMs: t("16:05"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "In small groups, pick one workflow and map it step by step.",
+      assignee: null,
+      timestampMs: t("16:05"),
+      dueDate: null,
+      completed: false,
+    },
+  ],
+  annotations: [
+    {
+      type: "HIGHLIGHT",
+      segmentStartMs: t("1:18"),
+      quote: "we ask them do they think that the welcome message was left by a human or a robot, and it's 50/50.",
+      note: null,
+    },
+    {
+      type: "NOTE",
+      segmentStartMs: t("7:24"),
+      quote: "Just keep it simple, like a simple greeting.",
+      note: "The main recommendation for welcome messages.",
+    },
+    {
+      type: "NEEDS_REVIEW",
+      segmentStartMs: t("6:02"),
+      quote: "Wikidata has also done a lot of experimentation with welcome messages",
+      note: "At 6:40 the same speaker says wikiHow. The project name may be mistranscribed.",
+    },
+  ],
+  timeline: [
+    { title: "Welcome messages: human or bot?", startMs: t("0:03"), endMs: t("1:51") },
+    { title: "Stories of connection and collaboration", startMs: t("1:51"), endMs: t("6:02") },
+    { title: "Simple automated welcomes", startMs: t("6:02"), endMs: t("8:19") },
+    { title: "Patrolling, acknowledgments and messaging", startMs: t("8:19"), endMs: EDITOR_ROUNDTABLE_MS },
+  ],
+};
+
+const SYNC_FEB_MS = 888_900;
+
+const weeklySyncFeb: SeedMeeting = {
+  videoKey: "Weekly sync — 2026-02-19.mp4",
+  transcriptFile: "weekly-sync-2026-02-19.txt",
+  format: "block",
+  title: "Weekly sync — 2026-02-19",
+  description:
+    "CiviWiki weekly sync: merged pull requests, the new test framework, plans for continuous integration, and the data model for Milestone 2.",
+  // Date from the file name; the recording itself says Monday, February 19th, 2018.
+  recordedAt: new Date("2026-02-19T00:00:00Z"),
+  durationMs: SYNC_FEB_MS,
+  folder: "Engineering",
+  tags: ["Weekly Sync", "Engineering"],
+  speakers: [
+    { name: "Briley Christopher Oxley", role: null },
+    { name: "Mitchell West", role: null },
+  ],
+  summaries: {
+    AI_NOTES: {
+      overview:
+        "Briley and Mitchell reviewed recently merged pull requests, including a first-time contribution and the new automated test framework, agreed to pursue continuous integration, and discussed the data model behind Milestone 2.",
+      sections: [
+        {
+          heading: "Merged pull requests",
+          points: [
+            { text: "Older maintenance PRs were merged: undefined variables and reorganized imports.", timestampMs: t("0:33") },
+            {
+              text: "PR #145 from first-time contributor Stephen Hitchcock updates the About Us page and links the GitHub repository.",
+              timestampMs: t("1:12"),
+            },
+            { text: "The team plans to thank and welcome Stephen publicly.", timestampMs: t("1:37") },
+          ],
+        },
+        {
+          heading: "Test framework",
+          points: [
+            {
+              text: "Peter, a developer from Poland, built automated tests and found several bugs; he's open to long-term maintenance.",
+              timestampMs: t("2:48"),
+            },
+            {
+              text: "Some tests rely on low-level DOM paths; adding HTML IDs and classes would fix this and makes good first issues.",
+              timestampMs: t("4:10"),
+            },
+          ],
+        },
+        {
+          heading: "Continuous integration",
+          points: [
+            { text: "Run the test suite automatically on merges to branches like dev and test.", timestampMs: t("5:13") },
+            { text: "May hire a developer familiar with Travis or Jenkins; Briley will open a GitHub issue.", timestampMs: t("5:35") },
+            { text: "Failing tests would fail the build and block the merge.", timestampMs: t("6:27") },
+            { text: "Darius set up a basic Jenkins system earlier; Mitchell may reach out to him.", timestampMs: t("7:14") },
+          ],
+        },
+        {
+          heading: "Milestone 2 and the data model",
+          points: [
+            {
+              text: "Milestone 2 is close: link solutions to bill text and the level of government action needed.",
+              timestampMs: t("8:12"),
+            },
+            { text: "Each issue thread could become a dataset of support for solutions.", timestampMs: t("9:20") },
+            {
+              text: "Store problems, causes and solutions in separate tables linked by foreign keys, with the same constraints in the UI.",
+              timestampMs: t("10:24"),
+            },
+            { text: "Problems sit at the top; causes link upward; solutions link to causes.", timestampMs: t("11:19") },
+          ],
+        },
+      ],
+    },
+    MEETING_MINUTES: {
+      attendees: ["Briley Christopher Oxley", "Mitchell West"],
+      agenda: ["Merged pull requests", "Test framework", "Continuous integration", "Milestone 2 and the data model", "Community outreach"],
+      discussion: [
+        {
+          topic: "Merged pull requests",
+          notes: "Maintenance PRs merged, plus PR #145 from first-time contributor Stephen Hitchcock.",
+          timestampMs: t("0:33"),
+        },
+        {
+          topic: "Test framework",
+          notes: "Peter's automated tests are merged. Brittle element selectors can be fixed by adding HTML IDs and classes.",
+          timestampMs: t("2:06"),
+        },
+        {
+          topic: "Continuous integration",
+          notes: "Run tests on every merge to key branches and block merges on failures; possibly hire a developer for it.",
+          timestampMs: t("5:13"),
+        },
+        {
+          topic: "Milestone 2 and the data model",
+          notes: "Link solutions to bills; model problems, causes and solutions as linked tables with enforced relationship rules.",
+          timestampMs: t("8:12"),
+        },
+        {
+          topic: "Community outreach",
+          notes: "Keep labeling good first issues and help-wanted tasks, tweeting and releasing videos.",
+          timestampMs: t("14:02"),
+        },
+      ],
+      decisions: [
+        { text: "Open a GitHub issue for setting up continuous integration.", timestampMs: t("5:46") },
+        { text: "Focus next week's meeting on pushing through to Milestone 2.", timestampMs: t("8:12") },
+      ],
+      nextSteps: [
+        { text: "Briley: create the continuous integration issue.", timestampMs: t("5:35") },
+        { text: "Mitchell: reach out to Juhi on Thursday.", timestampMs: t("7:46") },
+        { text: "Mitchell: draft a model for displaying issue-thread data for next week's meeting.", timestampMs: t("13:23") },
+      ],
+    },
+    SUMMARY: {
+      tldr: "The automated test framework is merged and the team will set up continuous integration next; Milestone 2 is close, and Mitchell will draft how issue-thread data should be modeled and displayed.",
+      keyPoints: [
+        { text: "First-time contributor Stephen Hitchcock's PR #145 was merged.", timestampMs: t("1:12") },
+        { text: "Peter's automated test framework is merged.", timestampMs: t("2:06") },
+        { text: "Continuous integration is next, possibly with a hired developer.", timestampMs: t("5:13") },
+        { text: "Problems, causes and solutions will be modeled as linked tables.", timestampMs: t("10:24") },
+      ],
+    },
+    CUSTOMER_FEEDBACK: {
+      context: "Internal developer sync for the CiviWiki open source project. No customer feedback was discussed.",
+      feedback: [],
+      painPoints: [{ text: "Tests have to locate elements through low-level DOM paths.", timestampMs: t("4:10") }],
+      requests: [],
+    },
+    PROJECT_MEETING: {
+      goal: "Reach Milestone 2: a simplified issue thread that links solutions to bills.",
+      // "I think we're really close on getting our ... simplified issue thread working."
+      status: "on_track",
+      workstreams: [
+        { name: "Continuous integration setup", owner: null, due: null, timestampMs: t("5:13") },
+        { name: "Link solutions to bill text", owner: null, due: null, timestampMs: t("8:26") },
+        { name: "Issue-thread data display model", owner: "Mitchell West", due: "Next week's meeting", timestampMs: t("13:23") },
+        { name: "HTML IDs and classes for testing", owner: null, due: null, timestampMs: t("4:34") },
+      ],
+      risks: [
+        {
+          text: "Tests depend on brittle low-level DOM paths.",
+          mitigation: "Add HTML IDs and classes, offered as good first issues.",
+          timestampMs: t("4:10"),
+        },
+        {
+          text: "Setting up CI could take months instead of days or weeks.",
+          mitigation: "Hire a developer familiar with Travis or Jenkins.",
+          timestampMs: t("6:47"),
+        },
+      ],
+      nextMilestone: { text: "Milestone 2: simplified issue thread with solutions linked to bills.", timestampMs: t("8:12") },
+    },
+  },
+  actionItems: [
+    {
+      description: "Create a GitHub issue for setting up continuous integration.",
+      assignee: "Briley Christopher Oxley",
+      timestampMs: t("5:35"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Thank and welcome first-time contributor Stephen Hitchcock.",
+      assignee: "Briley Christopher Oxley",
+      timestampMs: t("1:37"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Ask Darius about the Jenkins system he set up earlier.",
+      assignee: "Mitchell West",
+      timestampMs: t("7:14"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Reach out to Juhi on Thursday.",
+      assignee: "Mitchell West",
+      timestampMs: t("7:46"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Draft a model for displaying issue-thread data and present it next week.",
+      assignee: "Mitchell West",
+      timestampMs: t("13:23"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Keep labeling good first issues and help-wanted tasks.",
+      assignee: null,
+      timestampMs: t("14:02"),
+      dueDate: null,
+      completed: false,
+    },
+  ],
+  annotations: [
+    {
+      type: "HIGHLIGHT",
+      segmentStartMs: t("6:27"),
+      quote: "if any of the tests fail, it'll fail the build",
+      note: null,
+    },
+    {
+      type: "NOTE",
+      segmentStartMs: t("11:19"),
+      quote: "Problems are the top level.",
+      note: "Proposed hierarchy: problems at the top, causes link upward, solutions link to causes.",
+    },
+    {
+      type: "NEEDS_REVIEW",
+      segmentStartMs: t("0:01"),
+      quote: "Today is Monday, February 19th, 2018.",
+      note: "The recording says 2018, but the file is dated 2026-02-19.",
+    },
+  ],
+  timeline: [
+    { title: "Merged pull requests and a new contributor", startMs: t("0:01"), endMs: t("2:06") },
+    { title: "Test framework and continuous integration", startMs: t("2:06"), endMs: t("7:46") },
+    { title: "Milestone 2 and the data model", startMs: t("7:46"), endMs: t("13:50") },
+    { title: "Wrap-up and community outreach", startMs: t("13:50"), endMs: SYNC_FEB_MS },
+  ],
+};
+
+const SYNC_APR_MS = 685_500;
+
+const weeklySyncApr: SeedMeeting = {
+  videoKey: "Weekly sync — 2026-04-30.mp4",
+  transcriptFile: "weekly-sync-2026-04-30.txt",
+  format: "block",
+  title: "Weekly sync — 2026-04-30",
+  description:
+    "CiviWiki weekly sync: front-end componentization, the Django REST Framework pull request, app structure, contributor updates and milestone 0.2.",
+  // Date from the file name; the recording itself says Monday, May 28th, 2018.
+  recordedAt: new Date("2026-04-30T00:00:00Z"),
+  durationMs: SYNC_APR_MS,
+  folder: "Engineering",
+  tags: ["Weekly Sync", "Engineering"],
+  speakers: [
+    { name: "Briley Christopher Oxley", role: null },
+    { name: "Juhe Lee", role: null },
+  ],
+  summaries: {
+    AI_NOTES: {
+      overview:
+        "Briley and Juhe went through Juhe's developer report: front-end componentization, the approved Django REST Framework pull request, and whether to split the Django project into several apps. They also covered contributors, milestone 0.2 and pending reviews.",
+      sections: [
+        {
+          heading: "Developer report",
+          points: [
+            { text: "Juhe expects to finish the front-end componentization by tonight or early tomorrow.", timestampMs: t("0:24") },
+            { text: "The Django REST Framework endpoints PR is approved; Briley has reviewed it.", timestampMs: t("0:52") },
+            { text: "Merging it closes issue 120 (REST API endpoints for Threads).", timestampMs: t("6:01") },
+          ],
+        },
+        {
+          heading: "App structure",
+          points: [
+            {
+              text: "Briley raised splitting the single API app into several apps organized around the domain model.",
+              timestampMs: t("1:17"),
+            },
+            {
+              text: "Juhe: the simple API structure is easier for now given the cleanup backlog, but open to exploring it.",
+              timestampMs: t("2:07"),
+            },
+          ],
+        },
+        {
+          heading: "Web components",
+          points: [
+            { text: "Shadow DOM is becoming a standard feature in Firefox.", timestampMs: t("3:37") },
+            {
+              text: "Briley hopes the component work moves toward real web components over time.",
+              timestampMs: t("4:18"),
+            },
+          ],
+        },
+        {
+          heading: "Contributors and milestone 0.2",
+          points: [
+            {
+              text: "Joe may leave for school; Gordon is fixing backend bugs in milestone 0.2, such as vote counters and API deprecations.",
+              timestampMs: t("6:26"),
+            },
+            { text: "The psycopg bug only needs a version bump, a good first task.", timestampMs: t("7:22") },
+            { text: "About 25 issues remain on 0.2; some can move to 0.3.", timestampMs: t("7:28") },
+            {
+              text: "PR #197 (sharing button) still needs front-end testing before Juhe finishes the review.",
+              timestampMs: t("8:42"),
+            },
+          ],
+        },
+      ],
+    },
+    MEETING_MINUTES: {
+      attendees: ["Briley Christopher Oxley", "Juhe Lee"],
+      agenda: ["Developer report", "App structure", "Web components", "Contributors and milestone 0.2", "Pending reviews"],
+      discussion: [
+        {
+          topic: "Developer report",
+          notes: "Componentization nearly done; the approved Django REST Framework PR is ready to merge.",
+          timestampMs: t("0:24"),
+        },
+        {
+          topic: "App structure",
+          notes: "Splitting into domain-oriented apps is worth exploring later; the simple structure stays for now.",
+          timestampMs: t("1:17"),
+        },
+        {
+          topic: "Contributors and milestone 0.2",
+          notes: "Joe may leave; Gordon has backend bugs assigned. About 25 issues remain on 0.2.",
+          timestampMs: t("6:14"),
+        },
+        {
+          topic: "Pending reviews",
+          notes: "PR #197 needs front-end testing first. The About Us page has a capitalization error and the wrong assignee.",
+          timestampMs: t("7:51"),
+        },
+      ],
+      decisions: [
+        { text: "Merge the initial Django REST Framework work.", timestampMs: t("3:37") },
+        { text: "Defer some milestone 0.2 issues to 0.3.", timestampMs: t("7:28") },
+        { text: "Hold the REST Framework merge until conflicts with new updates are resolved.", timestampMs: t("10:19") },
+      ],
+      nextSteps: [
+        { text: "Juhe: finish the componentization pull request.", timestampMs: t("9:54") },
+        { text: "Juhe: work on documentation issues for 0.2.", timestampMs: t("9:54") },
+        { text: "Juhe: peer review the sharing-button PR after front-end testing.", timestampMs: t("8:51") },
+      ],
+    },
+    SUMMARY: {
+      tldr: "Juhe is close to finishing the front-end componentization and will merge the Django REST Framework work once conflicts are resolved; the team will trim milestone 0.2 by deferring some issues to 0.3.",
+      keyPoints: [
+        { text: "Front-end componentization is nearly done.", timestampMs: t("0:24") },
+        { text: "The approved REST Framework PR waits on conflict resolution.", timestampMs: t("10:19") },
+        { text: "Splitting the Django project into several apps is worth exploring later.", timestampMs: t("3:12") },
+        { text: "About 25 issues remain on milestone 0.2; some move to 0.3.", timestampMs: t("7:28") },
+      ],
+    },
+    CUSTOMER_FEEDBACK: {
+      context: "Internal developer sync for the CiviWiki open source project. No customer feedback was discussed.",
+      feedback: [],
+      painPoints: [
+        { text: "The original front-end structure was confusing for new developers.", timestampMs: t("4:50") },
+        { text: "Rebasing long-running PRs is tricky and sometimes needs a merge commit.", timestampMs: t("10:54") },
+      ],
+      requests: [],
+    },
+    PROJECT_MEETING: {
+      goal: "Finish milestone 0.2.",
+      status: null,
+      workstreams: [
+        { name: "Front-end componentization", owner: "Juhe Lee", due: "Tonight or early tomorrow", timestampMs: t("0:24") },
+        { name: "Django REST Framework endpoints", owner: "Juhe Lee", due: null, timestampMs: t("0:52") },
+        { name: "Milestone 0.2 backend bugs", owner: "Gordon", due: null, timestampMs: t("6:26") },
+        { name: "Documentation issues for 0.2", owner: "Juhe Lee", due: "This week", timestampMs: t("9:54") },
+      ],
+      risks: [
+        { text: "Contributor Joe may leave the project.", mitigation: null, timestampMs: t("6:26") },
+        {
+          text: "The REST Framework PR conflicts with newly pulled updates.",
+          mitigation: "Resolve the conflicts, rebase or create a merge commit.",
+          timestampMs: t("10:19"),
+        },
+      ],
+      nextMilestone: { text: "Milestone 0.2, with some issues deferred to 0.3.", timestampMs: t("7:28") },
+    },
+  },
+  actionItems: [
+    {
+      description: "Finish and push the front-end componentization.",
+      assignee: "Juhe Lee",
+      timestampMs: t("0:24"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Resolve conflicts and merge the Django REST Framework pull request.",
+      assignee: "Juhe Lee",
+      timestampMs: t("10:19"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Run front-end tests and finish the review of the sharing-button PR.",
+      assignee: "Juhe Lee",
+      timestampMs: t("8:42"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Work on documentation issues for milestone 0.2.",
+      assignee: "Juhe Lee",
+      timestampMs: t("9:54"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Defer some milestone 0.2 issues to 0.3.",
+      assignee: "Briley Christopher Oxley",
+      timestampMs: t("7:28"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Update the psycopg version.",
+      assignee: null,
+      timestampMs: t("7:22"),
+      dueDate: null,
+      completed: false,
+    },
+    {
+      description: "Fix the project name's capitalization and the assignee on the About Us page.",
+      assignee: null,
+      timestampMs: t("7:55"),
+      dueDate: null,
+      completed: false,
+    },
+  ],
+  annotations: [
+    {
+      type: "HIGHLIGHT",
+      segmentStartMs: t("2:07"),
+      quote: "I think having it a simple API structure makes it a little easier to kind of do housekeeping for now",
+      note: null,
+    },
+    {
+      type: "NEEDS_REVIEW",
+      segmentStartMs: t("8:51"),
+      quote: "should I assign you to that peer review for 119?",
+      note: "The PR discussed at 8:25 is number 197. Confirm which one Juhe is reviewing.",
+    },
+    {
+      type: "NEEDS_REVIEW",
+      segmentStartMs: t("0:01"),
+      quote: "Today is Monday, May 28th, 2018.",
+      note: "The recording says May 28, 2018, but the file is dated 2026-04-30.",
+    },
+  ],
+  timeline: [
+    { title: "Componentization and the REST Framework PR", startMs: t("0:01"), endMs: t("1:17") },
+    { title: "Restructuring the Django app", startMs: t("1:17"), endMs: t("3:37") },
+    { title: "Web components and closing issues", startMs: t("3:37"), endMs: t("6:14") },
+    { title: "Contributors, milestone 0.2 and reviews", startMs: t("6:14"), endMs: SYNC_APR_MS },
+  ],
+};
+
+export const seedMeetings = [productLaunch, boardSeats, editorRoundtable, weeklySyncFeb, weeklySyncApr];

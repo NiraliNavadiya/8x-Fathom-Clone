@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useShortcut } from "@/hooks/use-shortcut";
 import type { FolderSummary } from "@/lib/folders";
 import type { MeetingSummary } from "@/lib/meetings";
+import type { ShareInfo } from "@/lib/shares";
 import { replaceSearchParam } from "@/lib/search-params";
 
 function matches(meeting: MeetingSummary, query: string) {
@@ -22,10 +23,12 @@ export const CALL_SEARCH_ID = "call-search";
 export function CallsGrid({
   meetings,
   folders,
+  shareInfos,
   empty,
 }: {
   meetings: MeetingSummary[];
   folders: FolderSummary[];
+  shareInfos: Record<string, ShareInfo | null>;
   /** Shown when there are no calls at all (not when a search finds none). */
   empty: React.ReactNode;
 }) {
@@ -124,6 +127,7 @@ ${activeTag}`;
                   <MeetingTile
                     meeting={meeting}
                     folders={folders}
+                    share={shareInfos[meeting.id] ?? null}
                     selected={i === selected}
                     onDeleted={(id) => setDeleted((prev) => new Set(prev).add(id))}
                   />
@@ -141,8 +145,6 @@ function CallSearch({ query: q }: { query: string }) {
   const [query, setQuery] = useState(q);
   const input = useRef<HTMLInputElement>(null);
 
-  // Follow outside changes to ?q= (e.g. "Clear filters"), but not our own
-  // trimmed writes, which would eat a trailing space while typing.
   const [prevQ, setPrevQ] = useState(q);
   if (q !== prevQ) {
     setPrevQ(q);
@@ -161,9 +163,9 @@ function CallSearch({ query: q }: { query: string }) {
   }
 
   return (
-    <div role="search" className="relative w-full shrink-0 sm:ml-auto sm:w-80 lg:w-96">
+    <div role="search" className="relative w-full shrink-0 sm:ml-auto sm:w-64 lg:w-72">
       <Search
-        className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground"
+        className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
         aria-hidden
       />
       <input
@@ -180,7 +182,7 @@ function CallSearch({ query: q }: { query: string }) {
         placeholder="Search calls or tags"
         aria-label="Search calls by name or tag"
         aria-keyshortcuts="/"
-        className="h-10 w-full rounded-lg border border-input bg-card pr-11 pl-11 text-base transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 [&::-webkit-search-cancel-button]:hidden"
+        className="h-9 w-full rounded-lg border border-input bg-card pr-9 pl-9 text-sm transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 [&::-webkit-search-cancel-button]:hidden"
       />
       {query ? (
         <button
@@ -189,13 +191,13 @@ function CallSearch({ query: q }: { query: string }) {
             search("");
             input.current?.focus();
           }}
-          className="absolute top-1/2 right-2.5 grid size-7 -translate-y-1/2 place-items-center rounded text-muted-foreground hover:text-foreground"
+          className="absolute top-1/2 right-2 grid size-6 -translate-y-1/2 place-items-center rounded text-muted-foreground hover:text-foreground"
           aria-label="Clear search"
         >
-          <X className="size-4" aria-hidden />
+          <X className="size-3.5" aria-hidden />
         </button>
       ) : (
-        <kbd className="pointer-events-none absolute top-1/2 right-3 hidden -translate-y-1/2 rounded border px-1.5 font-mono text-[11px] text-muted-foreground sm:block">
+        <kbd className="pointer-events-none absolute top-1/2 right-2.5 hidden -translate-y-1/2 rounded border px-1 font-mono text-[10px] text-muted-foreground sm:block">
           /
         </kbd>
       )}
@@ -209,15 +211,16 @@ function TagChip({ active, ...props }: React.ComponentProps<"button"> & { active
       type="button"
       aria-pressed={active}
       className={cn(
-        "rounded-full border px-3 py-1 text-sm transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/40",
+        "rounded-full border px-3 py-1 text-[13px] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring/40",
         active
-          ? " bg-border font-medium text-foreground"
+          ? "bg-border font-medium text-foreground"
           : "border-transparent bg-secondary text-muted-foreground hover:border-border hover:text-foreground",
       )}
       {...props}
     />
   );
 }
+
 
 export function NoCalls({ children }: { children: React.ReactNode }) {
   return (

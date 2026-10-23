@@ -33,10 +33,10 @@ export function MeetingHeader({
   const folderMenu = useFolderMenu(meeting, folders);
 
   return (
-    <header className="grid gap-4 mb-4">
+    <header className="mb-3 grid gap-3">
       <div>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{meeting.title}</h1>
+          <h1 className="text-xl font-semibold tracking-tight sm:text-2xl">{meeting.title}</h1>
           {meeting.tags.length > 0 && (
             <ul className="flex flex-wrap gap-1.5" aria-label="Meeting type">
               {meeting.tags.map((tag) => (
@@ -50,14 +50,14 @@ export function MeetingHeader({
         </div>
         {!readOnly && <Description meetingId={meeting.id} initial={meeting.description} />}
 
-        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[0.8125rem] text-muted-foreground">
           <span className="flex items-center gap-1.5">
-            <Calendar className="size-4" aria-hidden />
+            <Calendar className="size-3.5" aria-hidden />
             {formatMeetingDate(meeting.recordedAt, meeting.createdAt)}
           </span>
           {meeting.durationMs !== null && (
             <span className="flex items-center gap-1.5">
-              <Clock className="size-4" aria-hidden />
+              <Clock className="size-3.5" aria-hidden />
               <span className="sr-only">Duration</span>
               {formatTimestamp(meeting.durationMs)}
             </span>
@@ -90,11 +90,11 @@ export function MeetingHeader({
       </div>
 
       {meeting.speakerDetails.length > 0 && (
-        <ul className="flex flex-wrap gap-2" aria-label="Speakers">
+        <ul className="flex flex-wrap gap-1.5" aria-label="Speakers">
           {meeting.speakerDetails.map((s) => {
             const chip = (
-              <span className="flex items-center gap-2 rounded-full border bg-card py-0.5 pr-3 pl-0.5 text-sm">
-                <SpeakerAvatar name={s.name} color={colors.get(s.name) ?? UNKNOWN_SPEAKER} className="size-6 text-[10px]" />
+              <span className="flex items-center gap-1.5 rounded-full border bg-card py-0.5 pr-2.5 pl-0.5 text-[0.8125rem]">
+                <SpeakerAvatar name={s.name} color={colors.get(s.name) ?? UNKNOWN_SPEAKER} className="size-5 text-[10px]" />
                 {s.name}
                 {s.role && <span className="sr-only">, {s.role}</span>}
               </span>
@@ -152,7 +152,7 @@ function Description({ meetingId, initial }: { meetingId: string; initial: strin
 
   if (!editing) {
     return (
-      <div className="group/description my-2 flex gap-2">
+      <div className="group/description my-1.5 flex gap-2 text-sm">
         <p className={saved ? "leading-relaxed" : "text-muted-foreground italic"}>
           {saved ?? "No description yet."}
         </p>

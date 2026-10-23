@@ -17,7 +17,7 @@ export function Breadcrumbs({ items }: { items: { label: string; href?: string }
                 {item.label}
               </Link>
             ) : (
-              <span aria-current="page" className="truncate px-1 font-medium text-foreground">
+              <span aria-current="page" className="truncate px-1 font-medium text-primary">
                 {item.label}
               </span>
             )}

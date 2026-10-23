@@ -27,7 +27,7 @@ export function SpeakerAvatar({ name, color, className }: { name: string; color:
     <span
       aria-hidden
       className={cn(
-        "grid size-7 shrink-0 place-items-center rounded-full text-[11px] font-semibold ring-1",
+        "grid size-7 shrink-0 place-items-center rounded-full text-[0.6875rem] font-semibold ring-1",
         color.bg,
         color.text,
         color.ring,

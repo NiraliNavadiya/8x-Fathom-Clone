@@ -1,4 +1,4 @@
-// Seeds the two test meetings onto the videos already in Neon Object Storage.
+// Seeds the test meetings onto the videos already in Neon Object Storage.
 // Idempotent: rerunning updates rows in place instead of duplicating them, and
 // rows it doesn't own (other tags, annotations, action items) are left alone.
 // Run with `npm run db:seed` after `npm run videos:import`.
@@ -205,7 +205,14 @@ async function verify(meetingId: string, m: SeedMeeting, segments: ParsedSegment
   };
 }
 
-const parsed = seedMeetings.map((m) => ({ m, segments: parse(m) }));
+// `npm run db:seed -- "<video key>" ...` seeds only those meetings, leaving
+// edits to the others alone. With no arguments, every meeting is seeded.
+const only = process.argv.slice(2);
+const unknown = only.filter((key) => !seedMeetings.some((m) => m.videoKey === key));
+if (unknown.length) throw new Error(`No seed data for: ${unknown.join(", ")}`);
+const parsed = seedMeetings
+  .filter((m) => only.length === 0 || only.includes(m.videoKey))
+  .map((m) => ({ m, segments: parse(m) }));
 const ids = await db().$transaction(
   async (tx) => {
     const out: string[] = [];

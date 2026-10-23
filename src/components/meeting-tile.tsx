@@ -1,6 +1,6 @@
 "use client";
 
-import { Copy, Folder, MoreVertical, Share2, Trash2, Video } from "lucide-react";
+import { Folder, MoreVertical, Share2, Trash2, Video } from "lucide-react";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -22,26 +22,21 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import type { FolderSummary } from "@/lib/folders";
 import { formatMeetingDate, formatTimestamp, initials } from "@/lib/format";
 import type { MeetingSummary } from "@/lib/meetings";
+import type { ShareInfo } from "@/lib/shares";
+import { ShareButton } from "@/components/meeting/share-dialog";
 
 const MAX_AVATARS = 3;
-
-async function copyLink(id: string) {
-  try {
-    await navigator.clipboard.writeText(`${window.location.origin}/meetings/${id}`);
-    toast.success("Link copied");
-  } catch {
-    toast.error("Couldn't copy the link");
-  }
-}
 
 export function MeetingTile({
   meeting,
   folders,
+  share,
   selected,
   onDeleted,
 }: {
   meeting: MeetingSummary;
   folders: FolderSummary[];
+  share: ShareInfo | null;
   selected: boolean;
   onDeleted: (id: string) => void;
 }) {
@@ -123,13 +118,13 @@ export function MeetingTile({
                 <li
                   key={name}
                   title={name}
-                  className="grid size-7 place-items-center rounded-full border-2 border-card bg-secondary text-[11px] font-semibold text-secondary-foreground"
+                  className="grid size-7 place-items-center rounded-full border-2 border-card bg-secondary text-[0.6875rem] font-semibold text-secondary-foreground"
                 >
                   {initials(name)}
                 </li>
               ))}
               {extraSpeakers > 0 && (
-                <li className="grid size-7 place-items-center rounded-full border-2 border-card bg-muted text-[11px] font-medium text-muted-foreground">
+                <li className="grid size-7 place-items-center rounded-full border-2 border-card bg-muted text-[0.6875rem] font-medium text-muted-foreground">
                   +{extraSpeakers}
                 </li>
               )}
@@ -156,12 +151,9 @@ export function MeetingTile({
           the ⋮ menu is always there for touch and keyboard users. */}
       <div className="absolute top-2 right-2 z-10 flex items-center gap-1">
         <div className="flex gap-1 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100 [@media(hover:none)]:hidden">
-          <TileIconButton label="Copy link" onClick={() => copyLink(meeting.id)}>
-            <Copy />
-          </TileIconButton>
-          <TileIconButton label="Share (coming soon)" disabled>
-            <Share2 />
-          </TileIconButton>
+          <div className="relative z-10">
+            <ShareButton meetingId={meeting.id} title={meeting.title} initial={share} compact />
+          </div>
           <TileIconButton label="Delete" onClick={remove} className="hover:text-destructive">
             <Trash2 />
           </TileIconButton>
@@ -181,9 +173,6 @@ export function MeetingTile({
             <MoreVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem onClick={() => copyLink(meeting.id)}>
-              <Copy /> Copy link
-            </DropdownMenuItem>
             <DropdownMenuItem disabled>
               <Share2 /> Share
               <span className="ml-auto text-xs text-muted-foreground">Soon</span>

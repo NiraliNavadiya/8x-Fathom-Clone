@@ -131,6 +131,11 @@
 
   html {
     @apply font-sans;
+    /* Everything is sized in rem, so this scales the whole UI to 90% (a
+       "zoomed out" feel at 100% browser zoom) while keeping the user's own
+       font-size preference. Breakpoints are unaffected: media queries use
+       the browser default, not this value. */
+    font-size: 90%;
     scrollbar-gutter: stable;
   }
 
@@ -143,12 +148,12 @@
 .wave-loader {
   display: flex;
   align-items: center;
-  height: 32px;
+  height: 2rem;
 }
 
 .wave-loader > span {
   width: 4px;
-  height: 32px;
+  height: 2rem;
   margin: 0 2px;
   border-radius: 999px;
   background: var(--primary);
@@ -158,12 +163,12 @@
 }
 
 .wave-loader[data-size="sm"] {
-  height: 20px;
+  height: 1.25rem;
 }
 
 .wave-loader[data-size="sm"] > span {
   width: 3px;
-  height: 20px;
+  height: 1.25rem;
   margin: 0 1.5px;
 }
 
@@ -190,7 +195,7 @@
 
 /* Audio player seek and volume bars */
 .player-range {
-  height: 16px;
+  height: 1rem;
   appearance: none;
   background: transparent;
   cursor: pointer;
@@ -218,17 +223,17 @@
 
 .player-range::-webkit-slider-thumb {
   appearance: none;
-  width: 12px;
-  height: 12px;
-  margin-top: -4px;
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-top: -0.25rem;
   border-radius: 999px;
   background: var(--foreground);
   transition: transform 150ms;
 }
 
 .player-range::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
+  width: 0.75rem;
+  height: 0.75rem;
   border: 0;
   border-radius: 999px;
   background: var(--foreground);

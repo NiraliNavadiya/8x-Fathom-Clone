@@ -26,28 +26,32 @@ export function ShareButton({
   meetingId,
   title,
   initial,
+  compact = false,
 }: {
   meetingId: string;
   title: string;
   initial: ShareInfo | null;
+  compact?: boolean;
 }) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <Button
-        variant="default"
+        variant={compact ? "secondary" : "default"}
+        size={compact ? "icon-sm" : undefined}
+        aria-label={compact ? `Share ${title}` : undefined}
         onClick={() => setOpen(true)}
-        className="ml-auto text-md h-10"
+        className={compact ? "bg-black/60 text-white backdrop-blur hover:bg-black/80" : "ml-auto"}
       >
         <Share2 aria-hidden />
-        Share
+        {!compact && "Share"}
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="gap-6 px-6 py-6 sm:max-w-lg sm:p-7">
+        <DialogContent className="gap-4 p-5 sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-xl font-semibold">
+            <DialogTitle className="text-base font-semibold">
               Share “{title}”
             </DialogTitle>
           </DialogHeader>
@@ -59,7 +63,7 @@ export function ShareButton({
               initial={initial}
             />
           ) : (
-            <p role="alert" className="text-sm text-destructive">
+            <p role="alert" className="text-[0.8125rem] text-destructive">
               Sharing isn’t available right now. Reload the page and try again.
             </p>
           )}
@@ -215,20 +219,20 @@ function ShareSettings({
     : null;
 
   return (
-    <div className="grid gap-5">
-      <section aria-labelledby="share-public" className="grid gap-3">
+    <div className="grid gap-4">
+      <section aria-labelledby="share-public" className="grid gap-2.5">
         <h3
           id="share-public"
-          className="flex items-center gap-2 text-base font-semibold"
+          className="flex items-center gap-2 text-sm font-semibold"
         >
-          <Globe className="size-4 text-muted-foreground" aria-hidden />
+          <Globe className="size-3.5 text-muted-foreground" aria-hidden />
           Share publicly
         </h3>
 
         <div className="flex flex-wrap items-center gap-2">
           <Button
             onClick={copyLink}
-            className="h-10 min-w-32 px-4 text-sm"
+            className="min-w-28"
             aria-live="polite"
           >
             {copied ? <Check aria-hidden /> : <Copy aria-hidden />}
@@ -238,7 +242,7 @@ function ShareSettings({
           {active &&
             (confirmRevoke ? (
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm text-muted-foreground">
+                <span className="text-[0.8125rem] text-muted-foreground">
                   Revoke for everyone?
                 </span>
 
@@ -276,20 +280,20 @@ function ShareSettings({
 
       <section
         aria-labelledby="share-people"
-        className="grid gap-3 border-t pt-5"
+        className="grid gap-2.5 border-t pt-4"
       >
         <h3
           id="share-people"
-          className="flex items-center gap-2 text-base font-semibold"
+          className="flex items-center gap-2 text-sm font-semibold"
         >
-          <UserPlus className="size-4 text-muted-foreground" aria-hidden />
+          <UserPlus className="size-3.5 text-muted-foreground" aria-hidden />
           Share with specific people
         </h3>
 
         <form onSubmit={addPeople} className="flex items-start gap-2">
           <div className="min-w-0 flex-1">
             <Input
-              className="h-10 text-sm"
+              className="h-8 text-[0.8125rem]"
               value={emails}
               onChange={(e) => {
                 setEmails(e.target.value);
@@ -306,7 +310,7 @@ function ShareSettings({
           <Button
             type="submit"
             variant="outline"
-            className="h-10 px-5 text-sm"
+            className="px-4"
             disabled={!emails.trim()}
           >
             Add
@@ -317,20 +321,20 @@ function ShareSettings({
           <p
             id="share-people-error"
             role="alert"
-            className="text-sm text-destructive"
+            className="text-[0.8125rem] text-destructive"
           >
             {emailError}
           </p>
         )}
 
         {recipients.length > 0 && (
-          <div className="grid gap-3">
+          <div className="grid gap-2.5">
             <ul className="flex flex-wrap gap-2" aria-label="Shared with">
               {recipients.map((email) => (
                 <li
                   key={email}
                   className={cn(
-                    "flex items-center gap-1.5 rounded-full border bg-background py-1 pl-3 pr-1 text-sm transition-opacity duration-150",
+                    "flex items-center gap-1.5 rounded-full border bg-background py-0.5 pl-2.5 pr-0.5 text-xs transition-opacity duration-150",
                     pendingEmails.has(email) && "opacity-60",
                   )}
                 >
@@ -341,9 +345,9 @@ function ShareSettings({
                     onClick={() => removePerson(email)}
                     disabled={pendingEmails.has(email)}
                     aria-label={`Remove ${email}`}
-                    className="grid size-6 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
+                    className="grid size-5 shrink-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-50"
                   >
-                    <X className="size-3.5" aria-hidden />
+                    <X className="size-3" aria-hidden />
                   </button>
                 </li>
               ))}
@@ -354,9 +358,9 @@ function ShareSettings({
                 href={gmailHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex w-fit items-center gap-2 text-sm font-medium text-primary hover:underline"
+                className="inline-flex w-fit items-center gap-1.5 text-[0.8125rem] font-medium text-primary hover:underline"
               >
-                <Mail className="size-4" aria-hidden />
+                <Mail className="size-3.5" aria-hidden />
                 Send the link in Gmail
               </a>
             )}

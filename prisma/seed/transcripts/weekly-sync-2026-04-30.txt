@@ -1,0 +1,244 @@
+Transcript - Weekly sync — 2026-04-30
+
+Briley Christopher Oxley
+0:01
+Hello and welcome to the Civvie Wiki weekly meeting. Today is Monday, May 28th, 2018. My name is Briley Christopher Oxley and I'm joined here by—
+
+Juhe Lee
+0:11
+Juhe Lee.
+
+Briley Christopher Oxley
+0:13
+Since there's only Juhe and I in the call today, we're gonna try to keep things pretty short. Juhe, do you want to go straight into the developer's report? I can check out issues that are assigned to you.
+
+Juhe Lee
+0:24
+Okay, yeah, um, so I've been working on Just the componentization of the front-end code, and still working on it, but I should be able to finish it by tonight or push it up by or finish it up by early morning tomorrow. And then I just wanted to check up with the Django REST framework endpoints.
+
+0:52
+I know that pull request has been out for a while. And it's been approved. So is it all right to merge, or should we wait for it to kind of be more complete with further pull requests?
+
+Briley Christopher Oxley
+1:10
+Well, I think it's fine. I've reviewed it. It looks good.
+
+Juhe Lee
+1:13
+Okay.
+
+Briley Christopher Oxley
+1:17
+So, you know, that's going to be ongoing work. One thing I had in the back of my mind that we might not have to do, but is that if we consider restructuring the app, because right now everything's kind of in this API app, I guess that's what they're called in Django.
+
+Juhe Lee
+1:34
+Mm-hmm.
+
+Briley Christopher Oxley
+1:36
+So you have projects and apps, right? That's the hierarchy. And I was thinking that that architecture only allows us to have one app that's kind of all-encompassing and What we have maybe is more common for projects to have multiple apps. In our case, it would be, for example, the civvies would have an app or other layers like that.
+
+1:57
+Do you think in the future it would be hard to kind of refactor this? Would it require moving things between tables, for example?
+
+Juhe Lee
+2:07
+Ah, all right. I see what you mean, changing the entire backend structure a little bit. OK. Well, I think having it a simple API structure makes it a little easier to kind of do housekeeping for now, just because we have so much backlog of cleaning up stuff to do.
+
+Briley Christopher Oxley
+2:29
+Yeah, definitely. Yeah, I wasn't saying we should do it.
+
+Juhe Lee
+2:32
+Yeah, but what did you have in mind in terms of kind of, I guess, dividing it up into different sections? Did you mean kind of like— modularizing the application based on our model structure, or—
+
+Briley Christopher Oxley
+2:46
+Yeah, essentially. Because I think the original design was just like throw everything in the API, because it was kind of like they were thinking of it as just an API-driven app. So I understand the rationale there, but I think we can still have, using Django REST Framework, or even just generically, you can still have an API-driven app that's more oriented around the business.
+
+3:07
+logic in the domain model. And so we can continue this conversation.
+
+Juhe Lee
+3:12
+Yeah, I'm definitely open to the idea just because I think the original intention of having an API-driven app was to just make it kind of very standardized and approachable. But it's not really in line with the best we can do with the concept we have at hand.
+
+3:35
+So it's definitely something we can explore.
+
+Briley Christopher Oxley
+3:37
+All right. But yeah, so for what you said— back to what you said, Islaya— let's go ahead and merge this initial work on the Django REST Framework. This is really good. And then keep on the componentization. As an aside, I was just reading on Hacker News that Shadow DOM has— I think they're going to— in Mozilla, they're going to have it as a standard feature.
+
+3:58
+It's been behind, I guess, a flag for a while that you had to enable or disable. Since about 2015 or 2016, I don't know. But basically, that's part of this Web Components standard that's pretty much fully fledged except a crucial part called HTML imports.
+
+Juhe Lee
+4:17
+Mm-hm.
+
+Briley Christopher Oxley
+4:18
+But anyway, when you're refactoring the frontend code to follow a component structure, in a way, I'm really hoping that we're going to be working towards actually building a web component structure. It's not here now. The component structure you're following is, as I understand, going to be more of kind of backbone modules or something like that, which is cool nonetheless.
+
+Juhe Lee
+4:47
+And it should definitely be an improvement of our previous structure.
+
+Briley Christopher Oxley
+4:50
+Yeah, it definitely was kind of confusing, particularly for new developers. I would imagine how hard it could be.
+
+Juhe Lee
+4:55
+Yeah. Especially, I feel like the project goes structured because stuck back in like 2011 structure, or not even 2011, like kind of standards. So it's definitely good to bring that back up to more modern ways.
+
+Briley Christopher Oxley
+5:10
+Right. Yeah. And so it's good, you know, have that balance of like the JavaScript has this really ethos around like innovating. At the same time, you lose all the prior— I'm not— you don't like fully lose all the prior knowledge, but you end up reinventing things, and in the process of reinventing, you lose some of the richness of the prior implementations.
+
+5:33
+But it's kind of nice that we have this Django project that's been around for quite a while, over 10 years, and it's so rich of a framework. It gives us common patterns, and we're still going to be building on patterns, design patterns like these web components that are designed to span, to test, to The test of time, so to speak, the span of a decade or so.
+
+5:57
+So we don't have to throw everything away.
+
+Juhe Lee
+6:00
+Definitely, definitely.
+
+Briley Christopher Oxley
+6:01
+By the way, so is both issue 120, REST API endpoints for Threads, and the Django REST Framework, are both of those going to be closed now?
+
+Juhe Lee
+6:08
+Yeah, they should be tied to the pull request. So once the pull request is merged, they will be closed.
+
+Briley Christopher Oxley
+6:14
+OK, cool. Those are the main development tasks. That we had to talk about. Have you been mentoring the other new developers or do you have new—
+
+Juhe Lee
+6:26
+Yeah. So they've been kind of excited. I know Joe was talking about his intents to leave. He was working on school stuff and then other stuff in life. Gordon has assigned himself to a lot of different stuff and he was working on getting some of the bugs In milestone 0.2 out of the way.
+
+Briley Christopher Oxley
+6:52
+So cool.
+
+Juhe Lee
+6:55
+Yeah, yeah, the bugs, kind of backend bug.
+
+Briley Christopher Oxley
+6:58
+Yeah, the vote counters and some API deprecated seem kind of like a big thing.
+
+Juhe Lee
+7:03
+Yeah, so he definitely has big and small things assigned, so I'm not too worried about not having work.
+
+Briley Christopher Oxley
+7:09
+Yeah, definitely just gotta kind of get— keep on track and keep able to focus. On one thing at a time. There's a bug around PsychoPG that you reported. Do you think that's a low-hanging fruit?
+
+Juhe Lee
+7:22
+Yeah, definitely just update the version number.
+
+Briley Christopher Oxley
+7:28
+Yeah, so that's a good, good first task then. Cook quality. All right, cool. Well, those are the main issues. There's still about 25 issues on this 0.2 milestone. But I think we can defer some of these to 0.3.
+
+7:51
+Did you get your name on the About Us page?
+
+Juhe Lee
+7:55
+Oh yes, yes. Yeah, so I think when Mitchell ran— initially fixed up the page, he ran like a spell checker that automatically changed Savvoki to lowercase, and that needs to be fixed. Yeah, but everything should be added on there correctly. Although the assignment is wrong, it should be assigned to me instead of him.
+
+Briley Christopher Oxley
+8:25
+But could you finalize the pull request review on number 197, template-based 3D Red sharing button. It looks good from my perspective.
+
+Juhe Lee
+8:42
+I have not run the front-end code testing yet, so I need to do that just because we don't know if the actual functions are working or not.
+
+Briley Christopher Oxley
+8:51
+Yeah, and also to see if we might need to make any changes to correspond with your component work. So I'll just— should I assign you to that peer review for 119?
+
+Juhe Lee
+9:10
+Yep.
+
+Briley Christopher Oxley
+9:11
+Okay, cool. 2, 3. And I'll close the other one. I'll close it, but noting that we can reopen it if needed.
+
+9:40
+We haven't lost any of the changes as long as we don't delete that branch. Okay, well, I think that's probably pretty good for the check-in unless you have any other things to note.
+
+Juhe Lee
+9:54
+Um, no, that's it. I guess for next week I'll just— or for this following week, I'm gonna finish up this pull request and then work on some of the documenting, um, issues that are associated with 0.2.
+
+Briley Christopher Oxley
+10:09
+Cool. Oh yeah, that's right.
+
+Juhe Lee
+10:12
+Uh, any—
+
+Briley Christopher Oxley
+10:13
+are there any that affect the, uh, a new developer? Was there something related to that?
+
+Juhe Lee
+10:19
+I didn't really think so. I mean, everything should be kind of all inclusive in terms of issues. So, and there shouldn't be any new issues that are popping up. But yeah, I, yeah, I would hold off with the Django REST Framework until I resolve the conflicts, I suppose.
+
+Briley Christopher Oxley
+10:51
+Yeah, that's fine.
+
+Juhe Lee
+10:52
+New updates were pulled in.
+
+Briley Christopher Oxley
+10:54
+Yeah, I hope that we can rebase that. It's kind of a tricky thing to rebase these PRs. We end up sometimes having to create a merge commit.
+
+Juhe Lee
+11:06
+Okay.
+
+Briley Christopher Oxley
+11:10
+All right, cool. If you have any troubles, uh, just give me a holler. If you mention me on GitHub, I'll be able to respond pretty quick.
+
+Juhe Lee
+11:15
+All right, sounds good.
+
+Briley Christopher Oxley
+11:17
+All right, well, have a good week.
+
+Juhe Lee
+11:20
+You too.
+
+Briley Christopher Oxley
+11:21
+Peace.
+
+Juhe Lee
+11:23
+Yeah, stay cool.

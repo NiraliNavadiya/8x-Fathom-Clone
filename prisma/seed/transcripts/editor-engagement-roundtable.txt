@@ -1,0 +1,371 @@
+Transcript - Editor engagement roundtable
+
+Speaker A
+0:03
+As experienced users, we all get people coming to us asking us for guidance. Not even new users necessarily. Sometimes even experienced users don't know everything. So I'm just kind of broadening that one out. Cool.
+
+Speaker B
+0:16
+Someone else?
+
+Speaker C
+0:17
+I'll speak as someone who really doesn't— I don't use my Talk page at all.
+
+Speaker A
+0:22
+And the only—
+
+Speaker C
+0:25
+let's say I encountered the Talk page, I think pretty early on, someone walked by me. I can't remember who that person was. I thought it was great to be welcomed, though I must admit I had no idea whether— who this person was. Was this a bot? Was this an automated thing that everyone gets welcomed this way? It was a bit mysterious.
+
+0:47
+I think I did go to that person's top page and thank them, but it was like devoid of a lot of social cues that I think really makes the whole place kind of alien.
+
+Speaker B
+1:00
+So what might have potentially addressed that issue? What kind of workflow could have potentially helped with that? Or how could it be—
+
+Speaker C
+1:07
+Well, even just saying, is this an automated message or is this a real person? Some indication will help.
+
+Speaker D
+1:13
+Semi-automated message.
+
+Speaker E
+1:14
+We have user tests where people actually—
+
+Speaker F
+1:18
+we ask them do they think that the welcome message was left by a human or a robot, and it's 50/50.
+
+Speaker C
+1:24
+Yeah.
+
+Speaker E
+1:26
+Same message.
+
+Speaker A
+1:27
+They can't tell.
+
+Speaker E
+1:27
+They can't tell. And I actually think personally that we should just basically just do it automatically and make sure that you know it's happened automatically, like welcome with Here's some places where you should start learning what to do. Here's some things to do based on your interests that you described to us. These are the types of things that we would like you to get involved with. Don't worry, you can't break it.
+
+Speaker B
+1:50
+Betsy, you had something.
+
+Speaker A
+1:51
+I wanted to share 2 stories about user page interactions that I think were important to my wiki career. 2 things. When I first started And I tried it again. It felt weird, but I made an edit and I added a word to the slide that wasn't there before.
+
+2:18
+And I went back the following day just to look and see if anybody was looking. And I got a— the first thing that happened was that that word that I had added had been translated into— the guy who was in the bedroom said it was French or Dutch. And that was a real surprise. Just that somebody on the other side of the world would care about this nothing little entry that I did.
+
+2:46
+And I got a welcome message from him as well. His username was Polly Frog. And he and I had a conversation. And it was not an automated message. It was not a technology. But it was very clear it was about this. And so right away I had some contact with him. And that was one of the things that kind of got me in and kind of got me going.
+
+3:11
+I'm going to share this. There's a group of us, some of you readers there, we have an editorial, which is still written in the first day, and she's in Japan, and we don't have a Japanese editor, so she edits in English. She takes— she makes these beautiful cards, takes these beautiful pictures, and her English is really, really shitty.
+
+3:35
+And I have to respect her a lot for posting in it anyway. But so she likes to collaborate. And she will post an article and she will know that the English makes a hole up in her. And so she will find something, she will reach out to somebody who knows the very exact meaning of those and say, can you please help me with this?
+
+3:56
+And the particular article she had written was about teaching combinations and permutations in the pool plastic waffles on printed cards, you know, just digital cards. And she had taken some good pictures of this and her writing was fairly understandable. And I tidied up the writing as best I could. I realized that I hadn't had that particular bit of math in some years and couldn't really write about it as well as I had to.
+
+4:24
+And I knew, being a longtime member of the community— and this, I think, is one of the reasons I like being in a small community— I knew which of our other editors were interested in things like math. So I got in touch with them. One of them I'm sure was going to be able to talk to it. I suspect the other was on my receipt.
+
+4:44
+And I said, you and you, million of these stuff, go improve this article. I know you can do it. And so this article that started in Japan made its way to California. In the next 24 hours, got edited by somebody in the UK, got edited by somebody in Gaza. And by this time, it needed more photos.
+
+5:05
+And I sent it back to the original editor and said, can you take photos for the last few steps? And that was kind of magical to witness that happen and to be part of that The content was not what I contributed to that article. It was more the collaboration and connection.
+
+Speaker B
+5:27
+It sounds like we have 2 workflows there, right?
+
+Speaker A
+5:30
+Yeah, I put down a roundup collaborators. But I think earlier you mentioned the welcome that kind of got you into the community, which wasn't really a welcome. It was more like a social human connection, if I'm understanding correctly. It was, I have noticed that you edit. This is good. I like it. And when you know people like you, And that's a whole lot different from, hi, please read a bunch of boilerplate text and, you know, here's a bunch of tutorials to get everything up and working.
+
+Speaker G
+6:02
+Wikidata has also done a lot of experimentation with welcome messages in terms of what we give people when they first register. We adapted the Wikimedia welcome bot, which leaves a message that signs off a person who's recently been active. We found it's way better when the welcome message is simple, like, hey, you made your first edit, cool. Here's something you can try.
+
+6:24
+If you have any questions, let me know. Signed off by someone who's recently been active within the past hour. And usually it's usually someone who's like an admin or a new article booster.
+
+Speaker A
+6:36
+So they start looking after who's new articles and who's writing articles.
+
+Speaker G
+6:40
+So that's what we had before. People were actually really, really good about welcoming. Welcoming was something people loved. You'd go through the list of new contributors and make it a point to leave a message for every single person when it first started on wikiHow. But people started to get Like people made their own templates, and they had lots of links, and it was just overwhelming, and it was very obvious that it was a template.
+
+7:03
+So when we switched over to this system, it was just—it just seemed like people don't know whether it's a canned message or not. They don't know a lot of time. Like sometimes people—they know by instant how instantaneous the message is left—that it's probably some kind of bot. But a lot of time, they just write back and say, "Hey, thanks," you know, and it just opens up that channel communication.
+
+7:24
+Just keeping it simple because you don't know when you're talking to. so many different people, you have no idea what their background is. To make a very specific message is just not a good way to go. Just keep it simple, like a simple greeting. Here's something to try if you have the time. And let me know if you have any questions.
+
+Speaker E
+7:39
+I was welcomed by you, and it made me feel super good.
+
+Speaker B
+7:44
+I mean, I just thought, hey, there's actually somebody who cares that I just showed up. It was a very simple message, but it just totally made me feel at home.
+
+Speaker A
+7:52
+So thank you for that.
+
+Speaker G
+7:52
+And then there's someone who signs it who's online. If you send them a question, they'll actually write back, a human even if they know it's a canned message or they find out afterwards, like sometimes people will ask me, was that an automated message? And I tell them the truth. I'm like, yeah, it was. We use automated messages so that we can make sure we leave you a greeting while you're online after you just made your edit so you actually get it. And they're like, oh, okay, cool.
+
+8:13
+Here's my question. Or, you know, I love when people— so it opens up that dialogue.
+
+Speaker B
+8:19
+Any other workflows before we break up the small groups?
+
+Speaker D
+8:23
+Yeah, I have— I have lots of talk page interaction, but I want to talk about 2 cases about other users' talk pages. A whole lot of my activity is manual reversion and I leave a templated message on the other user's talk page. And I don't want to know about whatever else this person is doing unless they have a thoughtful response.
+
+8:51
+So, you know, they said somebody was born in the year 3000 and I, you know, this— I revert that, it's wrong and I say you just put a, you know, wrong fact in and I don't want this person on my talk, if they get more templates from other editors, if they go around doing other stupid things, I don't want to know. But if they have— if they said, oh, I mistyped that and, you know, hey, I'm a real editor, you know, I was doing it by phone and something was wrong, then I want to know.
+
+9:20
+So that's a simple case but I just want to throw it out there.
+
+Speaker C
+9:23
+Yeah. So when there is a thoughtful response, where does it actually happen?
+
+Speaker D
+9:26
+It would happen on their user page from them.
+
+Jake
+9:30
+So I would only want to know— I would only want to get a—
+
+Speaker D
+9:34
+A reply back. I want to get a notice if they if they reply. I don't want to know if they get other templates or if they get blocked.
+
+Speaker E
+9:43
+So let me ask you a question.
+
+Jake
+9:45
+Do you watch their talk page? This fight has been going on.
+
+Speaker E
+9:50
+So how do you know when they respond to you?
+
+Speaker D
+9:54
+I don't. Okay, we're gonna hold on to that. The thing is, I don't want to have a watch list that just goes on right freaking day.
+
+Speaker C
+10:06
+Probably what I need is most of us have auto-watchlist pages you create.
+
+Speaker E
+10:11
+So if we're creating a new talk page for a user, it will automatically watchlist it.
+
+Speaker C
+10:15
+If somebody's already made like a template for it, then it will be automatically watchlisting it. The response to threads feature, we've solved your problem, okay?
+
+Speaker E
+10:27
+But we'll get to it later. Get to it later, okay.
+
+Speaker D
+10:29
+So the second thing—
+
+Speaker C
+10:30
+Yeah, I was just going to ask about the second thing.
+
+Speaker D
+10:32
+Second thing is I watch a lot of user talk pages on purpose. The people I I may have had interactions with in the past, positive or negative. And so, so there's a lot of workflow that I do that comes from other people's talk data. And I may not even interact with them. I may see user X got asked if they could look at a certain article and I'll go, I'm interested in that too.
+
+10:59
+Let me go over to that article. I won't even interact. I'll go look at the article and I may even help the thing happen. And so, I wanted to throw that out there. that I didn't interact at all, but I did something because of another person's TalkPage.
+
+Speaker C
+11:16
+So in that one, your activity actually started on your watch list.
+
+Speaker D
+11:21
+Yes. Okay.
+
+Speaker C
+11:22
+It's interesting because a lot of these like TalkPage interactions actually start kind of like in maybe a service, like there's something that happens, right? And then there's a TalkPage thing and then there's like something that happens afterwards. So I think when we go through these workflows, let's think about what happens before as well.
+
+Speaker E
+11:39
+So your vandal warning situation there, is user— step— event 1 is user vandalizes page.
+
+Speaker B
+11:47
+Event 2 is—
+
+Speaker D
+11:48
+That I have on my watchlist.
+
+Speaker E
+11:48
+That you have on your watchlist. Event 2 is you notice it and revert it. And in event 3, even though from your point of view you're using Twinkle or whatever, it's like revert and ban, revert and warn in one click. Even though it is a one-click event for you, it's actually a 2 event.
+
+Speaker D
+12:04
+There's other things that happen.
+
+Speaker E
+12:06
+There's other things that happen. So in the workflow concept, I mean, that is— we don't want to— I'm not— It's important to understand how these things happen, but actually it's more important to know what happens, because the software can be made better than, than like one click maybe. Um, or we just need to know exactly the steps that are really happening in the process.
+
+12:30
+So it's, you saw the reversion, you click revert, or you reverted it and then left a warning message on the top.
+
+Speaker D
+12:37
+I saw, I saw that something happened on my, on an article on my watch list.
+
+Speaker E
+12:41
+Right.
+
+Speaker D
+12:42
+I click on the diff, I look at the diff, and then And then I hit Twinkle if it's—
+
+Speaker C
+12:48
+if it needs quick reverting.
+
+Speaker B
+12:50
+Right. Okay. We're going to take 2 more things. I think Jake had his hand up.
+
+Speaker A
+12:54
+That's right.
+
+Speaker B
+12:56
+So you were first, then that.
+
+Jake
+13:00
+So 2 general areas. One we've done some work in, which is acknowledgments. So there are— I see a couple of clusters here. We just added the Thanks feature, which is the smallest one. And then we have Wikilove and then maybe badges and then Barn Stars being kind of the ultimate. I would like it to be easier to give and thank and have those interactions where gratitude is expressed.
+
+13:28
+And maybe ways to— when someone gives me a Barn Star or I give someone a Barn Star, that they can— I love the Barn-O-Meter, which is just a little template where you can put icons of the Barn Stars you've been given. I love— I would love more abilities to collect the acknowledgments that you've gotten, or if you could thanked to have a thank counter of all the times you've been thanked or something.
+
+13:54
+Or if you give someone a Barnstar that they could say, oh, thank you, and like maybe even a thanks button like on a Barnstar. So that's one. The other is kind of participation messages. So this kind of includes newsletters, Geo notices, real-life events.
+
+14:15
+I know that people are very kind of spam but if you could replace Edward's Bot, that would be great.
+
+Speaker E
+14:28
+I'm working on it.
+
+Speaker A
+14:30
+Okay. What is it again?
+
+Speaker F
+14:31
+I'm sorry?
+
+Speaker A
+14:32
+What is it again?
+
+Jake
+14:33
+Edward's Bot is our—
+
+Speaker D
+14:35
+it's a— Global messaging bot.
+
+Jake
+14:37
+Mostly called our spam bot. If you need to send a message to many users about something, like a newsletter because they participate in a help project or there's some real-life event you want them to participate, it's a very low-tech, difficult way to do that.
+
+Speaker B
+14:53
+We had one comment here.
+
+Speaker F
+14:58
+Yeah, I just wanted to note one tool which I actually found, which was, I think, developed recently and I actually found useful, which is the New Pages feed. There used to be a New Pages tool and they replaced it with the New Pages feed. And I think that's really helpful. So, I track it a few times occasionally.
+
+15:20
+I scan through the list. If I see some article that's interesting, I go there. I look through it, see if it's good. If it's not, whether I can— I do a source search and try and add some things in. And then go and say, thank the person who added it, or say that you can— so if it's something— there's one article about some prince in Europe, and I didn't understand the language most of the sources were in.
+
+15:49
+So I went to that person's page and told them, can you translate this and add it in?
+
+Speaker C
+15:53
+I found some sources, and I can't understand them.
+
+Speaker F
+15:57
+and then you can translate it and add it to the database. I think that was something that's fairly new and I found it to be really helpful.
+
+Speaker B
+16:05
+Great. So I'm going to wrap it up now because we're going to break up in small groups and we're basically going to ask you to pick one of these workflows as a small group and, you know, pick it up. So what I'd like you to do first is maybe Mariana could kind of quickly just summarize the items that we've just discussed.
+
+Speaker A
+16:29
+While not killing myself with this board.
+
+Speaker B
+16:31
+Yeah, here we go. We can back it up and put even more in the light.
+
+Speaker A
+16:35
+Can everybody see that? Is that like— Not at that angle, no.
+
+Speaker C
+16:40
+Does anyone want to turn this off?
+
+Speaker B
+16:42
+Yeah, I'll turn this off. So do you want to quickly just read them so that they're all on our mind, and then we're going to break up in small groups.
