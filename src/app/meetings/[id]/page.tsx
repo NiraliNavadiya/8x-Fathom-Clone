@@ -1,10 +1,11 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { Breadcrumbs } from "@/components/breadcrumbs";
+import { MeetingWorkspace } from "@/components/meeting/meeting-workspace";
 import { WaveLoader } from "@/components/wave-loader";
 import { restoreDeletedOnReload } from "@/lib/demo-restore";
-import { formatMeetingDate, formatTimestamp } from "@/lib/format";
-import { getMeeting } from "@/lib/meetings";
+import { listFolders } from "@/lib/folders";
+import { getMeetingWorkspace } from "@/lib/meetings";
+import { getShareInfo } from "@/lib/shares";
 
 async function MeetingView({
   params,
@@ -12,59 +13,32 @@ async function MeetingView({
 }: Pick<PageProps<"/meetings/[id]">, "params" | "searchParams">) {
   const [{ id }, { t }] = await Promise.all([params, searchParams]);
   await restoreDeletedOnReload();
-  const meeting = await getMeeting(id);
+  const [meeting, folders, share] = await Promise.all([
+    getMeetingWorkspace(id),
+    listFolders(),
+    // Sharing failing (e.g. SHARE_LINK_SECRET missing) shouldn't take the page down.
+    getShareInfo(id).catch((error) => {
+      console.error("Couldn't load share link", error);
+      return null;
+    }),
+  ]);
   if (!meeting) notFound();
 
   // `?t=85` starts the video at 1:25 (links from Ask Meetly use this).
-  const start = Number(typeof t === "string" ? t : NaN);
-  const fragment = Number.isFinite(start) && start > 0 ? `#t=${Math.floor(start)}` : "";
+  const seconds = Number(typeof t === "string" ? t : NaN);
+  const startMs = Number.isFinite(seconds) && seconds > 0 ? Math.floor(seconds) * 1000 : 0;
 
   return (
     <>
       <title>{`${meeting.title} · Meetly`}</title>
-      <Breadcrumbs
-        items={[
-          { label: "All Calls", href: "/calls" },
-          ...(meeting.folder ? [{ label: meeting.folder.name, href: `/folders/${meeting.folder.id}` }] : []),
-          { label: meeting.title },
-        ]}
-      />
-      <h1 className="text-2xl font-semibold">{meeting.title}</h1>
-      <p className="mt-1 mb-4 text-sm text-muted-foreground">
-        {formatMeetingDate(meeting.recordedAt, meeting.createdAt)}
-        {meeting.durationMs !== null && ` · ${formatTimestamp(meeting.durationMs)}`}
-      </p>
-      <video
-        key={fragment}
-        controls
-        preload="metadata"
-        className="mb-8 aspect-video w-full rounded-lg border bg-black"
-        src={`/api/meetings/${meeting.id}/video${fragment}`}
-      />
-
-      <h2 className="mb-3 text-lg font-semibold">Transcript</h2>
-      {meeting.transcript ? (
-        <ol className="space-y-3">
-          {meeting.transcript.segments.map((segment) => (
-            <li key={segment.id} className="grid grid-cols-[3.5rem_1fr] gap-2">
-              <span className="text-sm text-primary tabular-nums">{formatTimestamp(segment.startMs)}</span>
-              <p>
-                {segment.speaker && <span className="font-medium">{segment.speaker}: </span>}
-                {segment.text}
-              </p>
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <p className="text-muted-foreground">No transcript yet.</p>
-      )}
+      <MeetingWorkspace meeting={meeting} folders={folders} share={share} startMs={startMs} />
     </>
   );
 }
 
 export default function MeetingPage({ params, searchParams }: PageProps<"/meetings/[id]">) {
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-8">
+    <main className="page-container flex flex-1 flex-col py-8">
       <Suspense fallback={<WaveLoader label="Loading meeting" />}>
         <MeetingView params={params} searchParams={searchParams} />
       </Suspense>

@@ -58,6 +58,9 @@ model Meeting {
   videoSizeBytes   BigInt @map("video_size_bytes")
   durationMs       Int?   @map("duration_ms")
 
+  // Part of the share link's signature; bumping it on revoke retires the old link.
+  shareVersion Int @default(0) @map("share_version")
+
   // Soft delete. Deleted meetings are hidden everywhere; see restoreDeletedOnReload().
   isDeleted Boolean @default(false) @map("is_deleted")
 

@@ -1,12 +1,12 @@
 "use client";
 
-import { Check, Copy, Folder, FolderPlus, FolderX, MoreVertical, Share2, Trash2, Video } from "lucide-react";
+import { Copy, Folder, MoreVertical, Share2, Trash2, Video } from "lucide-react";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { cn } from "cn";
-import { deleteMeetingAction, moveMeetingAction } from "@/app/actions";
-import { NewFolderDialog } from "@/components/new-folder-dialog";
+import { deleteMeetingAction } from "@/app/actions";
+import { useFolderMenu } from "@/components/folder-menu";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -45,8 +45,9 @@ export function MeetingTile({
   selected: boolean;
   onDeleted: (id: string) => void;
 }) {
-  const [pending, startTransition] = useTransition();
-  const [newFolderOpen, setNewFolderOpen] = useState(false);
+  const [deleting, startTransition] = useTransition();
+  const folderMenu = useFolderMenu(meeting, folders);
+  const pending = deleting || folderMenu.pending;
   const [thumbnailFailed, setThumbnailFailed] = useState(false);
   const href = `/meetings/${meeting.id}`;
 
@@ -59,21 +60,13 @@ export function MeetingTile({
     });
   }
 
-  function move(folder: { id: string; name: string } | null) {
-    startTransition(async () => {
-      const result = await moveMeetingAction(meeting.id, folder?.id ?? null);
-      if (!result.ok) toast.error(result.error);
-      else toast.success(folder ? `Moved to ${folder.name}` : "Removed from folder");
-    });
-  }
-
   const extraSpeakers = meeting.speakers.length - MAX_AVATARS;
 
   return (
     <article
       data-selected={selected || undefined}
       aria-busy={pending || undefined}
-      className="group relative flex flex-col overflow-hidden rounded-xl border bg-card transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg hover:shadow-black/40 focus-within:border-primary/60 data-selected:border-primary data-selected:ring-2 data-selected:ring-primary/30 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+      className="group relative flex flex-col overflow-hidden rounded-lg border bg-card transition-[border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-foreground/15 hover:shadow-lg hover:shadow-black/40 focus-within:border-foreground/25 data-selected:border-primary data-selected:ring-2 data-selected:ring-primary/30 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
     >
       <div className="relative aspect-video bg-black">
         {thumbnailFailed ? (
@@ -106,7 +99,7 @@ export function MeetingTile({
             {/* Stretched link: the whole tile opens the meeting. */}
             <Link
               href={href}
-              className="outline-none after:absolute after:inset-0 after:content-[''] group-hover:text-accent-foreground"
+              className="outline-none after:absolute after:inset-0 after:content-['']"
             >
               {meeting.title}
             </Link>
@@ -149,7 +142,7 @@ export function MeetingTile({
               {meeting.tags.map((tag) => (
                 <li
                   key={tag.id}
-                  className="rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 text-xs text-accent-foreground"
+                  className="rounded-full bg-secondary px-2 py-0.5 text-xs text-muted-foreground"
                 >
                   {tag.name}
                 </li>
@@ -200,26 +193,7 @@ export function MeetingTile({
                 <Folder /> Move to folder
               </DropdownMenuSubTrigger>
               <DropdownMenuSubContent className="w-48">
-                {folders.map((folder) => (
-                  <DropdownMenuItem
-                    key={folder.id}
-                    disabled={meeting.folder?.id === folder.id}
-                    onClick={() => move(folder)}
-                  >
-                    <Folder className="fill-yellow-400 text-yellow-400" />
-                    <span className="truncate">{folder.name}</span>
-                    {meeting.folder?.id === folder.id && <Check className="ml-auto" aria-label="Current folder" />}
-                  </DropdownMenuItem>
-                ))}
-                {folders.length > 0 && <DropdownMenuSeparator />}
-                {meeting.folder && (
-                  <DropdownMenuItem onClick={() => move(null)}>
-                    <FolderX /> Remove from folder
-                  </DropdownMenuItem>
-                )}
-                <DropdownMenuItem onClick={() => setNewFolderOpen(true)}>
-                  <FolderPlus /> New folder…
-                </DropdownMenuItem>
+                {folderMenu.menuItems}
               </DropdownMenuSubContent>
             </DropdownMenuSub>
             <DropdownMenuSeparator />
@@ -230,12 +204,7 @@ export function MeetingTile({
         </DropdownMenu>
       </div>
 
-      <NewFolderDialog
-        open={newFolderOpen}
-        onOpenChange={setNewFolderOpen}
-        description={`“${meeting.title}” will be moved into it.`}
-        onCreated={(folder) => move(folder)}
-      />
+      {folderMenu.dialog}
     </article>
   );
 }

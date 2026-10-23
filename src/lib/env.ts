@@ -23,6 +23,10 @@ const geminiSchema = z.object({
   GEMINI_MODEL: z.string().min(1).default("gemini-flash-latest"),
 });
 
+const shareSchema = z.object({
+  SHARE_LINK_SECRET: z.string().min(32, "SHARE_LINK_SECRET must be at least 32 characters"),
+});
+
 type EnvSource = Record<string, string | undefined>;
 
 // Error messages name the offending variables but never include their values.
@@ -49,5 +53,6 @@ export const databaseEnv = lazy(databaseSchema);
 export const storageEnv = lazy(storageSchema);
 export const anthropicEnv = lazy(anthropicSchema);
 export const geminiEnv = lazy(geminiSchema);
+export const shareEnv = lazy(shareSchema);
 
-export const schemas = { databaseSchema, storageSchema, anthropicSchema, geminiSchema };
+export const schemas = { databaseSchema, storageSchema, anthropicSchema, geminiSchema, shareSchema };

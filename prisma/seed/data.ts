@@ -224,7 +224,7 @@ const boardSeats: SeedMeeting = {
   videoKey: "meeting_1.mp4",
   transcriptFile: "community-board-seats.txt",
   format: "block",
-  title: "Community Board seats — call for feedback",
+  title: "",
   description:
     "Community office hours on how Wikimedia Foundation community board seats are selected, including the trustee evaluation rubric, quotas, and the board's fiduciary duty.",
   recordedAt: null,

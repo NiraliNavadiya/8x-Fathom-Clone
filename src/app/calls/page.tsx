@@ -26,8 +26,8 @@ async function Calls() {
 
 export default function CallsPage() {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8">
-      <h1 className="mb-6 text-2xl font-semibold">All Calls</h1>
+    <main className="page-container flex flex-1 flex-col py-8">
+      {/*<h1 className="mb-6 text-2xl font-semibold">All Calls</h1>*/}
       <Suspense fallback={<WaveLoader label="Loading calls" />}>
         <Calls />
       </Suspense>

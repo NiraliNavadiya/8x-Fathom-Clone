@@ -30,7 +30,7 @@ async function FolderView({ params }: { params: Promise<{ id: string }> }) {
 
 export default function FolderPage({ params }: PageProps<"/folders/[id]">) {
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col px-4 py-8">
+    <main className="page-container flex flex-1 flex-col py-8">
       <Suspense fallback={<WaveLoader label="Loading folder" />}>
         <FolderView params={params} />
       </Suspense>

@@ -2,7 +2,14 @@ import "server-only";
 
 import { z } from "zod";
 import { db } from "@/lib/db";
-import type { MeetingStatus, Prisma } from "@/generated/prisma/client";
+import type {
+  AnnotationType,
+  GenerationStatus,
+  MeetingStatus,
+  Prisma,
+  SummaryTemplate,
+} from "@/generated/prisma/client";
+import { summaryContentSchemas } from "@/lib/summaries";
 
 export const segmentSchema = z
   .object({
@@ -247,3 +254,143 @@ export async function moveMeetingToFolder(id: string, folderId: string | null): 
   const { count } = await db().meeting.updateMany({ where: { id, isDeleted: false }, data: { folderId } });
   return count > 0;
 }
+
+// ─── Meeting detail page ─────────────────────────────────────────────────────
+
+export type SummaryView = {
+  template: SummaryTemplate;
+  status: GenerationStatus;
+  // Null when not READY or when stored content doesn't match the template.
+  content: unknown;
+  invalid: boolean;
+  isSample: boolean;
+  model: string | null;
+  updatedAt: string;
+};
+
+export type ActionItemView = {
+  position: number;
+  id: string;
+  description: string;
+  assignee: { id: string; name: string } | null;
+  timestampMs: number | null;
+  dueDate: string | null; // YYYY-MM-DD
+  completed: boolean;
+};
+
+export type AnnotationView = {
+  id: string;
+  type: AnnotationType;
+  startMs: number;
+  endMs: number;
+  quote: string;
+  note: string | null;
+  // Where the quote sits in the transcript, when known.
+  startSegmentId: string | null;
+  startOffset: number | null;
+  endSegmentId: string | null;
+  endOffset: number | null;
+};
+
+export function toAnnotationView(a: {
+  id: string;
+  type: AnnotationType;
+  startMs: number;
+  endMs: number;
+  quote: string;
+  note: string | null;
+  startSegmentId: string | null;
+  startOffset: number | null;
+  endSegmentId: string | null;
+  endOffset: number | null;
+}): AnnotationView {
+  return {
+    id: a.id,
+    type: a.type,
+    startMs: a.startMs,
+    endMs: a.endMs,
+    quote: a.quote,
+    note: a.note,
+    startSegmentId: a.startSegmentId,
+    startOffset: a.startOffset,
+    endSegmentId: a.endSegmentId,
+    endOffset: a.endOffset,
+  };
+}
+
+export function toActionItemView(a: {
+  id: string;
+  position: number;
+  description: string;
+  assignee: { id: string; name: string } | null;
+  timestampMs: number | null;
+  dueDate: Date | null;
+  completed: boolean;
+}): ActionItemView {
+  return {
+    id: a.id,
+    position: a.position,
+    description: a.description,
+    assignee: a.assignee && { id: a.assignee.id, name: a.assignee.name },
+    timestampMs: a.timestampMs,
+    dueDate: a.dueDate?.toISOString().slice(0, 10) ?? null,
+    completed: a.completed,
+  };
+}
+
+export type MeetingWorkspace = MeetingDetail & {
+  speakerDetails: { id: string; name: string; role: string | null }[];
+  summaries: SummaryView[];
+  actionItems: ActionItemView[];
+  annotations: AnnotationView[];
+  timeline: { id: string; title: string; startMs: number; endMs: number }[];
+};
+
+export async function getMeetingWorkspace(id: string): Promise<MeetingWorkspace | null> {
+  if (!uuid.safeParse(id).success) return null;
+  const meeting = await db().meeting.findFirst({
+    where: { id, isDeleted: false },
+    include: {
+      ...summaryInclude,
+      transcript: { include: transcriptInclude },
+      speakers: { orderBy: { name: "asc" } },
+      summaries: true,
+      actionItems: { orderBy: [{ position: "asc" }, { createdAt: "asc" }], include: { assignee: true } },
+      annotations: { orderBy: { startMs: "asc" } },
+      timelineSections: { orderBy: { position: "asc" } },
+    },
+  });
+  if (!meeting) return null;
+
+  return {
+    ...toSummary({ ...meeting, speakers: meeting.speakers.map((s) => ({ name: s.name })) }),
+    transcript: meeting.transcript ? toTranscript(meeting.transcript) : null,
+    speakerDetails: meeting.speakers.map((s) => ({ id: s.id, name: s.name, role: s.role })),
+    summaries: meeting.summaries.map((s) => {
+      const parsed = s.status === "READY" ? summaryContentSchemas[s.template].safeParse(s.content) : null;
+      return {
+        template: s.template,
+        status: s.status,
+        content: parsed?.success ? parsed.data : null,
+        invalid: parsed !== null && !parsed.success,
+        isSample: s.isSample,
+        model: s.model,
+        updatedAt: s.updatedAt.toISOString(),
+      };
+    }),
+    actionItems: meeting.actionItems.map(toActionItemView),
+    annotations: meeting.annotations.map(toAnnotationView),
+    timeline: meeting.timelineSections.map((t) => ({ id: t.id, title: t.title, startMs: t.startMs, endMs: t.endMs })),
+  };
+}
+
+export const descriptionSchema = z.string().trim().max(2000, "Keep the description under 2,000 characters");
+
+// Returns the saved description (null when cleared), or undefined if the meeting doesn't exist.
+export async function updateMeetingDescription(id: string, description: string): Promise<string | null | undefined> {
+  if (!uuid.safeParse(id).success) return undefined;
+  const value = descriptionSchema.parse(description) || null;
+  const { count } = await db().meeting.updateMany({ where: { id, isDeleted: false }, data: { description: value } });
+  return count > 0 ? value : undefined;
+}
+

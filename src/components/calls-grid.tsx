@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchX, Video } from "lucide-react";
+import { Search, SearchX, Video, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
 import { cn } from "cn";
@@ -15,6 +15,9 @@ function matches(meeting: MeetingSummary, query: string) {
   const q = query.toLowerCase();
   return meeting.title.toLowerCase().includes(q) || meeting.tags.some((t) => t.name.toLowerCase().includes(q));
 }
+
+/** The nav's "/" shortcut defers to this field when it's on the page. */
+export const CALL_SEARCH_ID = "call-search";
 
 export function CallsGrid({
   meetings,
@@ -68,22 +71,27 @@ ${activeTag}`;
 
   return (
     <div className="grid gap-5">
-      {tags.length > 0 && (
-        <div role="group" aria-label="Filter by tag" className="flex flex-wrap gap-2">
-          <TagChip active={!activeTag} onClick={() => replaceSearchParam("tag", null)}>
-            All
-          </TagChip>
-          {tags.map((tag) => (
-            <TagChip
-              key={tag.id}
-              active={activeTag === tag.name}
-              onClick={() => replaceSearchParam("tag", activeTag === tag.name ? null : tag.name)}
-            >
-              {tag.name}
+      {/* One row on wider screens: tags on the left, search at the far right.
+          On phones the search stacks above the tags. */}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <CallSearch query={query} />
+        {tags.length > 0 && (
+          <div role="group" aria-label="Filter by tag" className="flex min-w-0 flex-1 flex-wrap gap-2 sm:order-first">
+            <TagChip active={!activeTag} onClick={() => replaceSearchParam("tag", null)}>
+              All
             </TagChip>
-          ))}
-        </div>
-      )}
+            {tags.map((tag) => (
+              <TagChip
+                key={tag.id}
+                active={activeTag === tag.name}
+                onClick={() => replaceSearchParam("tag", activeTag === tag.name ? null : tag.name)}
+              >
+                {tag.name}
+              </TagChip>
+            ))}
+          </div>
+        )}
+      </div>
 
       {shown.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed py-16 text-center">
@@ -109,7 +117,7 @@ ${activeTag}`;
           <p className="sr-only" aria-live="polite">
             {shown.length} {shown.length === 1 ? "call" : "calls"}
           </p>
-          <ul ref={grid} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <ul ref={grid} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
             {shown.map((meeting, i) => (
               <li key={meeting.id} className="flex">
                 <div className="flex w-full flex-col [&>article]:flex-1">
@@ -129,16 +137,82 @@ ${activeTag}`;
   );
 }
 
+function CallSearch({ query: q }: { query: string }) {
+  const [query, setQuery] = useState(q);
+  const input = useRef<HTMLInputElement>(null);
+
+  // Follow outside changes to ?q= (e.g. "Clear filters"), but not our own
+  // trimmed writes, which would eat a trailing space while typing.
+  const [prevQ, setPrevQ] = useState(q);
+  if (q !== prevQ) {
+    setPrevQ(q);
+    if (q !== query.trim()) setQuery(q);
+  }
+
+  useShortcut("/", (e) => {
+    e.preventDefault();
+    input.current?.focus();
+    input.current?.select();
+  });
+
+  function search(value: string) {
+    setQuery(value);
+    replaceSearchParam("q", value.trim() || null);
+  }
+
+  return (
+    <div role="search" className="relative w-full shrink-0 sm:ml-auto sm:w-80 lg:w-96">
+      <Search
+        className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-muted-foreground"
+        aria-hidden
+      />
+      <input
+        ref={input}
+        id={CALL_SEARCH_ID}
+        type="search"
+        value={query}
+        onChange={(e) => search(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key !== "Escape") return;
+          if (query) search("");
+          else e.currentTarget.blur();
+        }}
+        placeholder="Search calls or tags"
+        aria-label="Search calls by name or tag"
+        aria-keyshortcuts="/"
+        className="h-10 w-full rounded-lg border border-input bg-card pr-11 pl-11 text-base transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 [&::-webkit-search-cancel-button]:hidden"
+      />
+      {query ? (
+        <button
+          type="button"
+          onClick={() => {
+            search("");
+            input.current?.focus();
+          }}
+          className="absolute top-1/2 right-2.5 grid size-7 -translate-y-1/2 place-items-center rounded text-muted-foreground hover:text-foreground"
+          aria-label="Clear search"
+        >
+          <X className="size-4" aria-hidden />
+        </button>
+      ) : (
+        <kbd className="pointer-events-none absolute top-1/2 right-3 hidden -translate-y-1/2 rounded border px-1.5 font-mono text-[11px] text-muted-foreground sm:block">
+          /
+        </kbd>
+      )}
+    </div>
+  );
+}
+
 function TagChip({ active, ...props }: React.ComponentProps<"button"> & { active: boolean }) {
   return (
     <button
       type="button"
       aria-pressed={active}
       className={cn(
-        "rounded-full border px-3 py-1 text-sm transition-colors",
+        "rounded-full border px-3 py-1 text-sm transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/40",
         active
-          ? "border-primary bg-primary text-primary-foreground"
-          : "text-muted-foreground hover:border-primary/40 hover:text-foreground",
+          ? " bg-border font-medium text-foreground"
+          : "border-transparent bg-secondary text-muted-foreground hover:border-border hover:text-foreground",
       )}
       {...props}
     />

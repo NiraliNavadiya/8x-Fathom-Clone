@@ -31,11 +31,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="flex min-h-full flex-col">
         <TooltipProvider>
           {/* The nav reads ?q=, so it renders on the client after the shell. */}
-          <Suspense fallback={<div className="h-16 border-b" />}>
+          <Suspense fallback={<div className="h-14 border-b bg-card" />}>
             <TopNav />
           </Suspense>
           {children}
-          <AskMeetly />
+          <Suspense fallback={null}>
+            <AskMeetly />
+          </Suspense>
           <Toaster
             theme="dark"
             position="bottom-left"

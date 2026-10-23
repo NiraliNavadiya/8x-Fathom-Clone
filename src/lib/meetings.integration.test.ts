@@ -9,8 +9,10 @@ import {
   createMeeting,
   deleteMeeting,
   getMeeting,
+  getMeetingWorkspace,
   listMeetings,
   saveTranscript,
+  updateMeetingDescription,
   type TranscriptSegmentInput,
 } from "@/lib/meetings";
 
@@ -323,5 +325,33 @@ describe("imported videos", () => {
       { videoKey: "Fathom Test Meeting 4 - Oct 21 2026.mp4", videoSizeBytes: BigInt(3_880_665) },
       { videoKey: "meeting_1.mp4", videoSizeBytes: BigInt(67_603_686) },
     ]);
+  });
+});
+
+describe("meeting detail page", () => {
+  it("saves, trims and clears the description", async () => {
+    const meeting = await newMeeting();
+    expect(await updateMeetingDescription(meeting.id, "  Weekly sync notes  ")).toBe("Weekly sync notes");
+    expect((await getMeeting(meeting.id))?.description).toBe("Weekly sync notes");
+    expect(await updateMeetingDescription(meeting.id, "   ")).toBeNull();
+    expect((await getMeeting(meeting.id))?.description).toBeNull();
+    await expect(updateMeetingDescription(meeting.id, "x".repeat(2001))).rejects.toThrow();
+    expect(await updateMeetingDescription(randomUUID(), "nope")).toBeUndefined();
+  });
+
+  it("loads everything the page shows for both seeded meetings", async () => {
+    for (const videoKey of ["Fathom Test Meeting 4 - Oct 21 2026.mp4", "meeting_1.mp4"]) {
+      const { id } = await db().meeting.findUniqueOrThrow({ where: { videoKey } });
+      const w = await getMeetingWorkspace(id);
+      expect(w).not.toBeNull();
+      expect(w!.summaries).toHaveLength(5);
+      expect(w!.summaries.every((s) => s.content !== null && !s.invalid)).toBe(true);
+      expect(w!.timeline.length).toBeGreaterThan(0);
+      expect(w!.timeline.length).toBeLessThanOrEqual(4);
+      expect(w!.actionItems.length).toBeGreaterThan(0);
+      expect(w!.annotations.length).toBeGreaterThan(0);
+      const segmentIds = new Set(w!.transcript!.segments.map((s) => s.id));
+      expect(w!.annotations.every((a) => a.startSegmentId && segmentIds.has(a.startSegmentId))).toBe(true);
+    }
   });
 });
